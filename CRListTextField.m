@@ -80,7 +80,7 @@
     
     self.textField = ({
         UITextField *tf = [[UITextField alloc] init];
-        tf.backgroundColor = [UIColor colorWithWhite:0 alpha:0.6];
+        tf.backgroundColor = [UIColor colorWithWhite:0 alpha:0.7];
         tf.leftViewMode = UITextFieldViewModeAlways;
         tf.keyboardAppearance = UIKeyboardAppearanceDark;
         tf.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8, 0)];

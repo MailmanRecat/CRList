@@ -27,7 +27,6 @@
 
 - (void)initClass{
     self.backgroundColor = [UIColor clearColor];
-    self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     self.icon = ({
         UILabel *i = [[UILabel alloc] init];
@@ -50,6 +49,20 @@
         [l.widthAnchor constraintGreaterThanOrEqualToConstant:0].active = YES;
         [l.widthAnchor constraintLessThanOrEqualToAnchor:self.contentView.widthAnchor constant:-88].active = YES;
         l;
+    });
+    
+    self.selectedBackgroundView = ({
+        UIVibrancyEffect *eff = [UIVibrancyEffect effectForBlurEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
+        UIVisualEffectView *visual = [[UIVisualEffectView alloc] initWithEffect:eff];
+        UIView *v = [[UIView alloc] init];
+        v.backgroundColor = [UIColor whiteColor];
+        v.translatesAutoresizingMaskIntoConstraints = NO;
+        [visual.contentView addSubview:v];
+        [v.topAnchor constraintEqualToAnchor:visual.contentView.topAnchor].active = YES;
+        [v.leftAnchor constraintEqualToAnchor:visual.contentView.leftAnchor].active = YES;
+        [v.rightAnchor constraintEqualToAnchor:visual.contentView.rightAnchor].active = YES;
+        [v.bottomAnchor constraintEqualToAnchor:visual.contentView.bottomAnchor].active = YES;
+        visual;
     });
 }
 
@@ -88,6 +101,7 @@
 
 - (void)layoutSubviews{
     self.icon.frame = CGRectMake(0, 0, 56, self.frame.size.height);
+    self.selectedBackgroundView.frame = self.bounds;
 }
 
 @end

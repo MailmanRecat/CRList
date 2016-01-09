@@ -404,6 +404,9 @@
                                       
                                       [tableView moveRowAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
                                       cell.timeString = @"dasdsa";
+                                      cell.selected = NO;
+                                  } cancel:^(UIAlertAction *action){
+                                      cell.selected = NO;
                                   }];
         });
     }else{
@@ -417,6 +420,9 @@
                                       self.r2c--;
                                       [tableView moveRowAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
                                       cell.timeString = nil;
+                                      cell.selected = NO;
+                                  } cancel:^(UIAlertAction *action){
+                                      cell.selected = NO;
                                   }];
         });
     }
@@ -425,9 +431,10 @@
 - (void)letAlertActionWithTitle:(NSString *)t
                             msg:(NSString *)m
                     actionTitle:(NSString *)at
-                        handler:(void (^ __nullable)(UIAlertAction *action))handler{
+                        handler:(void (^ __nullable)(UIAlertAction *action))handler
+                         cancel:(void (^ __nullable)(UIAlertAction *action))cancel{
     UIAlertController *al = [UIAlertController alertControllerWithTitle:t message:m preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction     *ca = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction     *ca = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:cancel];
     UIAlertAction     *ac = [UIAlertAction actionWithTitle:at style:UIAlertActionStyleDefault handler:handler];
     
     [al addAction:ac];
