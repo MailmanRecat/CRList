@@ -59,7 +59,7 @@
         UILabel *t = [[UILabel alloc] initWithFrame:CGRectMake(56, 0, 280, 54)];
         t.userInteractionEnabled = NO;
         t.font = [UIFont systemFontOfSize:24 weight:UIFontWeightMedium];
-        t.text = @"Add undo";
+        t.text = @"Add todo";
         [self.visual.contentView addSubview:t];
         t;
     });

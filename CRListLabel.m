@@ -25,18 +25,33 @@
     return self;
 }
 
+- (void)setTextColor:(UIColor *)textColor{
+    [super setTextColor:textColor];
+    
+    self.line.backgroundColor = textColor;
+}
+
 - (void)setOverline:(BOOL)overline{
     if( _overline == overline ) return;
     _overline = overline;
     
-    
     if( overline )
-        [self letDelete];
+        [self letDelete:YES];
     else
-        [self letRecover];
+        [self letRecove:YES];
 }
 
-- (void)letDelete{
+- (void)setOverline:(BOOL)overline animation:(BOOL)animation{
+    if( _overline == overline ) return;
+    _overline = overline;
+    
+    if( overline )
+        [self letDelete:animation];
+    else
+        [self letRecove:animation];
+}
+
+- (void)letDelete:(BOOL)animation{
     CGRect selfRect = self.bounds;
     CGFloat lineHeight = 2;
     
@@ -44,22 +59,35 @@
     self.line.frame = CGRectMake(-8, (selfRect.size.height - lineHeight) / 2, 0, lineHeight);
     [self addSubview:self.line];
     
-    [UIView animateWithDuration:0.25
-                          delay:0.0f options:(7 << 16)
-                     animations:^{
-                         self.line.frame = CGRectMake(-8, (selfRect.size.height - lineHeight) / 2, selfRect.size.width + 16, lineHeight);
-                     }completion:nil];
+    if( animation )
+        [UIView animateWithDuration:0.25
+                              delay:0.0f options:(7 << 16)
+                         animations:^{
+                             self.line.frame = CGRectMake(-8, (selfRect.size.height - lineHeight) / 2, selfRect.size.width + 16, lineHeight);
+                         }completion:nil];
+    else
+        self.line.frame = CGRectMake(-8, (selfRect.size.height - lineHeight) / 2, selfRect.size.width + 16, lineHeight);
 }
 
-- (void)letRecover{
+- (void)letRecove:(BOOL)animation{
     CGRect selfRect = self.bounds;
     CGFloat lineHeight = 2;
     
-    [UIView animateWithDuration:0.25
-                          delay:0.0f options:(7 << 16)
-                     animations:^{
-                         self.line.frame = CGRectMake(-8, (selfRect.size.height - lineHeight) / 2, 0, lineHeight);
-                     }completion:nil];
+    if( animation )
+        [UIView animateWithDuration:0.25
+                              delay:0.0f options:(7 << 16)
+                         animations:^{
+                             self.line.frame = CGRectMake(-8, (selfRect.size.height - lineHeight) / 2, 0, lineHeight);
+                         }completion:nil];
+    else
+        self.line.frame = CGRectMake(-8, (selfRect.size.height - lineHeight) / 2, 0, lineHeight);
+}
+
+- (void)layoutSubviews{
+    if( self.overline ){
+        CGFloat lineHeight = 2;
+        self.line.frame = CGRectMake(-8, (self.frame.size.height - lineHeight) / 2, self.frame.size.width + 16, lineHeight);
+    }
 }
 
 @end

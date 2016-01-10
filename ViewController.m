@@ -14,6 +14,7 @@
 #import "CRListSettingView.h"
 #import "UIColor+Theme.h"
 #import "CRLIAsset.h"
+#import "TimeTalkerBird.h"
 
 @interface ViewController()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 
@@ -44,89 +45,155 @@
     self.view.backgroundColor = [UIColor clearColor];
     self.adjust = YES;
     
+//    NSArray *test = @[
+//                    [CRLIAsset assetFromDic:@{
+//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                              CRLIAssetItemDicKey: @"dasdbasdas",
+//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                              CRLIAssetColorDicKey: @"0"
+//                                              }],
+//                    [CRLIAsset assetFromDic:@{
+//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                              CRLIAssetItemDicKey: @"dasddasdasdsadsadsabasdas",
+//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                              CRLIAssetColorDicKey: @"1"
+//                                              }],
+//                    [CRLIAsset assetFromDic:@{
+//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                              CRLIAssetItemDicKey: @"dasdbadsasdas",
+//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                              CRLIAssetColorDicKey: @"2"
+//                                              }],
+//                    [CRLIAsset assetFromDic:@{
+//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                              CRLIAssetItemDicKey: @"dasas",
+//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                              CRLIAssetColorDicKey: @"3"
+//                                              }],
+//                    [CRLIAsset assetFromDic:@{
+//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                              CRLIAssetItemDicKey: @"d",
+//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                              CRLIAssetColorDicKey: @"4"
+//                                              }],
+//                    [CRLIAsset assetFromDic:@{
+//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                              CRLIAssetItemDicKey: @"dasdbadasdsadsasdas",
+//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                              CRLIAssetColorDicKey: @"6"
+//                                              }],
+//                    [CRLIAsset assetFromDic:@{
+//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                              CRLIAssetItemDicKey: @"dasddasbasdas",
+//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                              CRLIAssetColorDicKey: @"7"
+//                                              }],
+//                    [CRLIAsset assetFromDic:@{
+//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                              CRLIAssetItemDicKey: @"dasas",
+//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                              CRLIAssetColorDicKey: @"2"
+//                                              }],
+//                    [CRLIAsset assetFromDic:@{
+//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                              CRLIAssetItemDicKey: @"dasdbasddasdsadsaas",
+//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                              CRLIAssetColorDicKey: @"1"
+//                                              }],
+//                    [CRLIAsset assetFromDic:@{
+//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                              CRLIAssetItemDicKey: @"dasdbasddasdsadsaas",
+//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                              CRLIAssetColorDicKey: @"1"
+//                                              }],
+//                    [CRLIAsset assetFromDic:@{
+//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                              CRLIAssetItemDicKey: @"dasdbasddasdsadsaas",
+//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                              CRLIAssetColorDicKey: @"1"
+//                                              }],
+//                    [CRLIAsset assetFromDic:@{
+//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                              CRLIAssetItemDicKey: @"dasdbasddasdsadsaas",
+//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                              CRLIAssetColorDicKey: @"1"
+//                                              }],
+//                    [CRLIAsset assetFromDic:@{
+//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                              CRLIAssetItemDicKey: @"dasdbasddasdsadsaas",
+//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                              CRLIAssetColorDicKey: @"1"
+//                                              }],
+//                    [CRLIAsset assetFromDic:@{
+//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                              CRLIAssetItemDicKey: @"dasdbasddasdsadsaas",
+//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                              CRLIAssetColorDicKey: @"1"
+//                                              }],
+//                    [CRLIAsset assetFromDic:@{
+//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                              CRLIAssetItemDicKey: @"dasdbasddasdsadsaas",
+//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                              CRLIAssetColorDicKey: @"1"
+//                                              }]
+//                    ];
+    
     NSArray *test = @[
-                    [CRLIAsset assetFromDic:@{
-                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-                                              CRLIAssetItemDicKey: @"dasdbasdas",
-                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-                                              CRLIAssetColorDicKey: @"0"
-                                              }],
-                    [CRLIAsset assetFromDic:@{
-                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-                                              CRLIAssetItemDicKey: @"dasddasdasdsadsadsabasdas",
-                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-                                              CRLIAssetColorDicKey: @"1"
-                                              }],
-                    [CRLIAsset assetFromDic:@{
-                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-                                              CRLIAssetItemDicKey: @"dasdbadsasdas",
-                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-                                              CRLIAssetColorDicKey: @"2"
-                                              }],
-                    [CRLIAsset assetFromDic:@{
-                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-                                              CRLIAssetItemDicKey: @"dasas",
-                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-                                              CRLIAssetColorDicKey: @"3"
-                                              }],
-                    [CRLIAsset assetFromDic:@{
-                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-                                              CRLIAssetItemDicKey: @"d",
-                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-                                              CRLIAssetColorDicKey: @"4"
-                                              }],
-                    [CRLIAsset assetFromDic:@{
-                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-                                              CRLIAssetItemDicKey: @"dasdbadasdsadsasdas",
-                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-                                              CRLIAssetColorDicKey: @"6"
-                                              }],
-                    [CRLIAsset assetFromDic:@{
-                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-                                              CRLIAssetItemDicKey: @"dasddasbasdas",
-                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-                                              CRLIAssetColorDicKey: @"7"
-                                              }],
-                    [CRLIAsset assetFromDic:@{
-                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-                                              CRLIAssetItemDicKey: @"dasas",
-                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-                                              CRLIAssetColorDicKey: @"2"
-                                              }],
-                    [CRLIAsset assetFromDic:@{
-                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-                                              CRLIAssetItemDicKey: @"dasdbasddasdsadsaas",
-                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-                                              CRLIAssetColorDicKey: @"1"
-                                              }],
-                    ];
+                                          [CRLIAsset assetFromDic:@{
+                                                                    CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+                                                                    CRLIAssetItemDicKey: @"tes",
+                                                                    CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+                                                                    CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+                                                                    CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+                                                                    CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+                                                                    CRLIAssetColorDicKey: @"1"
+                                                                    }]
+                      ];
     
     self.assets = [[NSMutableArray alloc] initWithArray:test];
     
@@ -201,8 +268,7 @@
     asset.item  = self.tf.textField.text.length > 256 ? [self.tf.textField.text substringToIndex:256] : self.tf.textField.text;
     asset.color = [NSString stringWithFormat:@"%ld", self.sv.selectedIndexPath.row];
     
-    NSLog(@"%@", asset);
-    
+    [self.assets insertObject:asset atIndex:0];
     [self.undoAssets insertObject:asset atIndex:0];
     self.r1c++;
     
@@ -342,13 +408,13 @@
 
     if( section == 0 ){
         return self.section1Header ? : ({
-            self.section1Header = [self headerViewWithTitle:@"Undo"];
+            self.section1Header = [self headerViewWithTitle:@"Todo"];
             ((UILabel *)self.section1Header.subviews.firstObject).textColor = [UIColor colorWithIndex:2];
             self.section1Header;
         });
     }else{
         return self.section2Header ? : ({
-            self.section2Header = [self headerViewWithTitle:@"Checked"];
+            self.section2Header = [self headerViewWithTitle:@"Done"];
             ((UILabel *)self.section2Header.subviews.firstObject).textColor = [UIColor colorWithIndex:0];
             self.section2Header;
         });
@@ -373,18 +439,44 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    CRListTableViewCell *hair;
     CRLIAsset *asset;
+    
     if( indexPath.section == 0 )
         asset = self.undoAssets[indexPath.row];
     else
         asset = self.checkedAssets[indexPath.row];
+    
+    hair = (CRListTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CRListTableViewCellID] ? : [CRListTableViewCell new];
+    
+    hair.themeColor = [UIColor colorWithIndex:[asset.color intValue]];
+    hair.selected   = NO;
+    
+    if( indexPath.section == 0 ){
         
+        hair.listLabel.text = asset.item;
+        hair.timeString = nil;
+        [hair.listLabel setOverline:NO animation:NO];
+        
+    }else if( indexPath.section == 1 ){
+        
+        hair.listLabel.text = asset.item;
+        hair.timeString = asset.checkedTime;
+        [hair.listLabel setOverline:YES animation:NO];
+        
+    }
     
-    CRListTableViewCell *c = [[CRListTableViewCell alloc] init];
-    c.listLabel.text = asset.item;
-    c.themeColor = [UIColor colorWithIndex:[asset.color intValue]];
+    return hair;
+}
+
+- (NSString *)timeString{
     
-    return c;
+    NSArray *m = @[
+                   @"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul", @"Aug", @"Sep", @"Oct", @"Nov", @"Dec"
+                   ];
+    NSDateComponents *date = [TimeTalkerBird currentDate];
+
+    return [NSString stringWithFormat:@"%@ / %ld", [m objectAtIndex:date.month - 1], date.day];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -392,35 +484,53 @@
     
     if( indexPath.section == 0 ){
         
+        CRLIAsset *asset = [self.undoAssets objectAtIndex:indexPath.row];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self letAlertActionWithTitle:@"Check this item?" msg:nil
-                              actionTitle:@"Check"
+            [self letAlertActionWithTitle:@"Done this item?" msg:nil
+                              actionTitle:@"Done"
+                                tintColor:[UIColor colorWithIndex:5]
                                   handler:^(UIAlertAction *action){
                                       cell.listLabel.overline = YES;
                                       self.r1c--;
                                       self.r2c++;
                                       
+                                      [self.undoAssets removeObjectAtIndex:indexPath.row];
+                                      [self.checkedAssets insertObject:asset atIndex:0];
+                                      [self.assets replaceObjectAtIndex:0 withObject:asset];
+                                      
                                       [self.checkedAssets addObject:self.assets.firstObject];
                                       
                                       [tableView moveRowAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
-                                      cell.timeString = @"dasdsa";
+                                      cell.timeString   = [self timeString];
+                                      asset.checkedTime = cell.timeString;
                                       cell.selected = NO;
+
                                   } cancel:^(UIAlertAction *action){
                                       cell.selected = NO;
                                   }];
         });
     }else{
+        
+        CRLIAsset *asset = [self.checkedAssets objectAtIndex:indexPath.row];
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [self letAlertActionWithTitle:@"Are you sure want to recover this item?" msg:nil
                               actionTitle:@"Recover"
+                                tintColor:[UIColor colorWithIndex:0]
                                   handler:^(UIAlertAction *action){
                                       cell.listLabel.overline = NO;
                                       self.r1c++;
                                       self.r2c--;
+                                      
+                                      [self.checkedAssets removeObjectAtIndex:indexPath.row];
+                                      [self.undoAssets insertObject:asset atIndex:0];
+                                      [self.assets replaceObjectAtIndex:0 withObject:asset];
+                                      
                                       [tableView moveRowAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
                                       cell.timeString = nil;
                                       cell.selected = NO;
+
                                   } cancel:^(UIAlertAction *action){
                                       cell.selected = NO;
                                   }];
@@ -431,15 +541,26 @@
 - (void)letAlertActionWithTitle:(NSString *)t
                             msg:(NSString *)m
                     actionTitle:(NSString *)at
+                      tintColor:(UIColor *)tintColor
                         handler:(void (^ __nullable)(UIAlertAction *action))handler
                          cancel:(void (^ __nullable)(UIAlertAction *action))cancel{
     UIAlertController *al = [UIAlertController alertControllerWithTitle:t message:m preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction     *ca = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:cancel];
     UIAlertAction     *ac = [UIAlertAction actionWithTitle:at style:UIAlertActionStyleDefault handler:handler];
     
+    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:t];
+    [title addAttribute:NSFontAttributeName
+                  value:[UIFont systemFontOfSize:20 weight:UIFontWeightMedium]
+                  range:NSMakeRange(0, title.length)];
+    [title addAttribute:NSForegroundColorAttributeName
+                  value:tintColor
+                  range:NSMakeRange(0, title.length)];
+    [al setValue:title forKey:@"attributedTitle"];
+    
     [al addAction:ac];
     [al addAction:ca];
     [self presentViewController:al animated:YES completion:nil];
+    al.view.tintColor = tintColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle{

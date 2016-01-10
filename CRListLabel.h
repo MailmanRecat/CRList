@@ -12,4 +12,6 @@
 
 @property( nonatomic, assign ) BOOL overline;
 
+- (void)setOverline:(BOOL)overline animation:(BOOL)animation;
+
 @end
