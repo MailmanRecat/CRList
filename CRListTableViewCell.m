@@ -8,6 +8,7 @@
 
 #import "CRListTableViewCell.h"
 #import "UIFont+MaterialDesignIcons.h"
+#import "CRLIAsset.h"
 
 @interface CRListTableViewCell()
 
@@ -84,7 +85,7 @@
         });
     }
     
-    if( timeString != nil ){
+    if( [timeString isEqualToString:CRLIAssetCheckedTimeDefVal] == NO ){
         [self.contentView addSubview:self.timeLabel];
         [self.timeLabel.topAnchor constraintEqualToAnchor:self.listLabel.bottomAnchor constant:-8].active = YES;
         [self.timeLabel.leftAnchor constraintEqualToAnchor:self.contentView.leftAnchor constant:64].active = YES;

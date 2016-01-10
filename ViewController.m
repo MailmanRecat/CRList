@@ -162,15 +162,7 @@
     self.tf = tf;
 }
 
-- (void)letSetting{
-    if( !self.sv ){
-        self.sv = ({
-            CRListSettingView *st = [[CRListSettingView alloc] init];
-            st.translatesAutoresizingMaskIntoConstraints = NO;
-            st;
-        });
-    }
-    
+- (void)letSetting{    
     [self.view addSubview:self.sv];
     
     self.svLayoutGuide = [self.sv.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:self.view.frame.size.height];
@@ -191,6 +183,12 @@
 }
 
 - (void)letBear{
+    self.sv = ({
+        CRListSettingView *st = [[CRListSettingView alloc] init];
+        st.translatesAutoresizingMaskIntoConstraints = NO;
+        st;
+    });
+    
     self.bear = ({
         UITableView *bear = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         bear.translatesAutoresizingMaskIntoConstraints = NO;
@@ -198,6 +196,7 @@
         bear.showsVerticalScrollIndicator = NO;
         bear.backgroundColor = [UIColor clearColor];
         bear.separatorStyle = UITableViewCellSeparatorStyleNone;
+        bear.allowsMultipleSelectionDuringEditing = NO;
         bear.delegate = self;
         bear.dataSource = self;
         bear;
@@ -253,6 +252,10 @@
     return content;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    return YES;
+}
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
 
     if( section == 0 ){
@@ -303,7 +306,7 @@
     if( indexPath.section == 0 ){
         
         hair.listLabel.text = asset.item;
-        hair.timeString = nil;
+        hair.timeString = CRLIAssetCheckedTimeDefVal;
         [hair.listLabel setOverline:NO animation:NO];
         
     }else if( indexPath.section == 1 ){
@@ -313,6 +316,9 @@
         [hair.listLabel setOverline:YES animation:NO];
         
     }
+    
+    NSLog(@"%d %d", hair.selected, hair.highlighted);
+    hair.editing = NO;
     
     return hair;
 }
@@ -378,7 +384,7 @@
                                       self.r1c++;
                                       self.r2c--;
                                       
-                                      cell.timeString = asset.checkedTime = nil;
+                                      cell.timeString = asset.checkedTime = CRLIAssetCheckedTimeDefVal;
                                       
                                       [self.checkedAssets removeObjectAtIndex:indexPath.row];
                                       [self.undoAssets insertObject:asset atIndex:0];
@@ -399,15 +405,45 @@
     }
 }
 
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+                                            forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if( editingStyle == UITableViewCellEditingStyleDelete ){
+        
+        CRLIAsset *editingAsset = indexPath.section == 0 ? self.undoAssets[indexPath.row] : self.checkedAssets[indexPath.row];
+        
+        if( indexPath.section == 0 ){
+            self.r1c--;
+            [self.undoAssets removeObject:editingAsset];
+        }else{
+            self.r2c--;
+            [self.checkedAssets removeObject:editingAsset];
+        }
+        
+        [self.assets removeObject:editingAsset];
+        [self letSynchronize];
+        
+        [tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationLeft];
+    }
+}
+
 - (void)letAlertActionWithTitle:(NSString *)t
                             msg:(NSString *)m
                     actionTitle:(NSString *)at
                       tintColor:(UIColor *)tintColor
                         handler:(void (^ __nullable)(UIAlertAction *action))handler
                          cancel:(void (^ __nullable)(UIAlertAction *action))cancel{
-    UIAlertController *al = [UIAlertController alertControllerWithTitle:t message:m preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController *al = [UIAlertController alertControllerWithTitle:t message:m preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction     *ca = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:cancel];
     UIAlertAction     *ac = [UIAlertAction actionWithTitle:at style:UIAlertActionStyleDefault handler:handler];
+    
+    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:t];
+    [title addAttribute:NSFontAttributeName
+                  value:[UIFont systemFontOfSize:20 weight:UIFontWeightMedium]
+                  range:NSMakeRange(0, title.length)];
+        [title addAttribute:NSForegroundColorAttributeName
+                      value:tintColor
+                      range:NSMakeRange(0, title.length)];
+        [al setValue:title forKey:@"attributedTitle"];
     
     [al addAction:ac];
     [al addAction:ca];

@@ -10,8 +10,6 @@
 
 @interface CRListSettingView : UITableView
 
-//@property( nonatomic, strong ) UITableView *table;
-//@property( nonatomic, assign ) BOOL doubleCheck;
 @property( nonatomic, strong ) NSIndexPath *selectedIndexPath;
 
 @end
