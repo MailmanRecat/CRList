@@ -21,6 +21,7 @@
     if( self ){
         self.line = [[UIView alloc] init];
         self.line.layer.cornerRadius = 1;
+        self.numberOfLines = 1;
     }
     return self;
 }
@@ -60,8 +61,8 @@
     [self addSubview:self.line];
     
     if( animation )
-        [UIView animateWithDuration:0.25
-                              delay:0.0f options:(7 << 16)
+        [UIView animateWithDuration:0.25f
+                              delay:0.25f options:(7 << 16)
                          animations:^{
                              self.line.frame = CGRectMake(-8, (selfRect.size.height - lineHeight) / 2, selfRect.size.width + 16, lineHeight);
                          }completion:nil];

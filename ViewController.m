@@ -13,7 +13,7 @@
 #import "CRListTextField.h"
 #import "CRListSettingView.h"
 #import "UIColor+Theme.h"
-#import "CRLIAsset.h"
+#import "CRLIAssetManager.h"
 #import "TimeTalkerBird.h"
 
 @interface ViewController()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
@@ -29,7 +29,6 @@
 @property( nonatomic, strong ) CRListSettingView *sv;
 @property( nonatomic, strong ) NSLayoutConstraint *svLayoutGuide;
 
-
 @property( nonatomic, strong ) NSMutableArray *assets;
 @property( nonatomic, strong ) NSMutableArray *undoAssets;
 @property( nonatomic, strong ) NSMutableArray *checkedAssets;
@@ -42,166 +41,42 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor clearColor];
-    self.adjust = YES;
     
-//    NSArray *test = @[
-//                    [CRLIAsset assetFromDic:@{
-//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                              CRLIAssetItemDicKey: @"dasdbasdas",
-//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                              CRLIAssetColorDicKey: @"0"
-//                                              }],
-//                    [CRLIAsset assetFromDic:@{
-//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                              CRLIAssetItemDicKey: @"dasddasdasdsadsadsabasdas",
-//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                              CRLIAssetColorDicKey: @"1"
-//                                              }],
-//                    [CRLIAsset assetFromDic:@{
-//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                              CRLIAssetItemDicKey: @"dasdbadsasdas",
-//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                              CRLIAssetColorDicKey: @"2"
-//                                              }],
-//                    [CRLIAsset assetFromDic:@{
-//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                              CRLIAssetItemDicKey: @"dasas",
-//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                              CRLIAssetColorDicKey: @"3"
-//                                              }],
-//                    [CRLIAsset assetFromDic:@{
-//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                              CRLIAssetItemDicKey: @"d",
-//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                              CRLIAssetColorDicKey: @"4"
-//                                              }],
-//                    [CRLIAsset assetFromDic:@{
-//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                              CRLIAssetItemDicKey: @"dasdbadasdsadsasdas",
-//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                              CRLIAssetColorDicKey: @"6"
-//                                              }],
-//                    [CRLIAsset assetFromDic:@{
-//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                              CRLIAssetItemDicKey: @"dasddasbasdas",
-//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                              CRLIAssetColorDicKey: @"7"
-//                                              }],
-//                    [CRLIAsset assetFromDic:@{
-//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                              CRLIAssetItemDicKey: @"dasas",
-//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                              CRLIAssetColorDicKey: @"2"
-//                                              }],
-//                    [CRLIAsset assetFromDic:@{
-//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                              CRLIAssetItemDicKey: @"dasdbasddasdsadsaas",
-//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                              CRLIAssetColorDicKey: @"1"
-//                                              }],
-//                    [CRLIAsset assetFromDic:@{
-//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                              CRLIAssetItemDicKey: @"dasdbasddasdsadsaas",
-//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                              CRLIAssetColorDicKey: @"1"
-//                                              }],
-//                    [CRLIAsset assetFromDic:@{
-//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                              CRLIAssetItemDicKey: @"dasdbasddasdsadsaas",
-//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                              CRLIAssetColorDicKey: @"1"
-//                                              }],
-//                    [CRLIAsset assetFromDic:@{
-//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                              CRLIAssetItemDicKey: @"dasdbasddasdsadsaas",
-//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                              CRLIAssetColorDicKey: @"1"
-//                                              }],
-//                    [CRLIAsset assetFromDic:@{
-//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                              CRLIAssetItemDicKey: @"dasdbasddasdsadsaas",
-//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                              CRLIAssetColorDicKey: @"1"
-//                                              }],
-//                    [CRLIAsset assetFromDic:@{
-//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                              CRLIAssetItemDicKey: @"dasdbasddasdsadsaas",
-//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                              CRLIAssetColorDicKey: @"1"
-//                                              }],
-//                    [CRLIAsset assetFromDic:@{
-//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                              CRLIAssetItemDicKey: @"dasdbasddasdsadsaas",
-//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                              CRLIAssetColorDicKey: @"1"
-//                                              }]
-//                    ];
-    
-    NSArray *test = @[
-                                          [CRLIAsset assetFromDic:@{
-                                                                    CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-                                                                    CRLIAssetItemDicKey: @"tes",
-                                                                    CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
-                                                                    CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-                                                                    CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
-                                                                    CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-                                                                    CRLIAssetColorDicKey: @"1"
-                                                                    }]
-                      ];
-    
-    self.assets = [[NSMutableArray alloc] initWithArray:test];
-    
-    [self updateData];
-    
+    [self.view setBackgroundColor:[UIColor clearColor]];
+    [self setAdjust:YES];
+    [self setAssets:[CRLIAssetManager fetchAssets]];
     [self letBear];
     [self letTextField];
     [self letObserver];
+}
+
+- (void)setAssets:(NSMutableArray *)assets{
+    _assets = assets;
+    
+    if( self.undoAssets == nil )
+        self.undoAssets = [[NSMutableArray alloc] init];
+    else
+        [self.undoAssets removeAllObjects];
+    
+    if( self.checkedAssets == nil )
+        self.checkedAssets = [[NSMutableArray alloc] init];
+    else
+        [self.checkedAssets removeAllObjects];
+    
+    self.r1c = self.r2c = 0;
+    [assets enumerateObjectsUsingBlock:^(CRLIAsset *asset, NSUInteger index, BOOL *sS){
+        if( [asset.checkedTime isEqualToString:CRLIAssetCheckedTimeDefVal] ){
+            self.r1c++;
+            [self.undoAssets addObject:asset];
+        }else{
+            self.r2c++;
+            [self.checkedAssets addObject:asset];
+        }
+    }];
+}
+
+- (void)letSynchronize{
+    [CRLIAssetManager updateAssets:self.assets];
 }
 
 - (void)letObserver{
@@ -219,41 +94,6 @@
     }
 }
 
-- (void)insertItem:(CRLIAsset *)asset{
-    
-}
-
-- (void)updateItem:(CRLIAsset *)asset{
-    
-}
-
-- (void)checkItem:(CRLIAsset *)asset{
-    
-}
-
-- (void)recoverItem:(CRLIAsset *)asset{
-    
-}
-
-- (void)updateData{
-    if( self.undoAssets == nil )
-        self.undoAssets = [[NSMutableArray alloc] init];
-    
-    if( self.checkedAssets == nil )
-        self.checkedAssets = [[NSMutableArray alloc] init];
-    
-    self.r1c = self.r2c = 0;
-    [self.assets enumerateObjectsUsingBlock:^(CRLIAsset *asset, NSUInteger index, BOOL *sS){
-        if( [asset.checkedTime isEqualToString:CRLIAssetCheckedTimeDefVal] ){
-            self.r1c++;
-            [self.undoAssets addObject:asset];
-        }else{
-            self.r2c++;
-            [self.checkedAssets addObject:asset];
-        }
-    }];
-}
-
 - (void)tfShouldEndTask{
     self.adjust = YES;
     if( [self.tf.done.titleLabel.text isEqualToString:@"Cancel"] )
@@ -268,6 +108,14 @@
     asset.item  = self.tf.textField.text.length > 256 ? [self.tf.textField.text substringToIndex:256] : self.tf.textField.text;
     asset.color = [NSString stringWithFormat:@"%ld", self.sv.selectedIndexPath.row];
     
+    if( [self.tf.textField.text isEqualToString:@"com.mailman.crlist.clear"] ){
+        [CRLIAssetManager clearAllAssets:YES];
+        [self setAssets:[CRLIAssetManager fetchAssets]];
+        [self letCancel];
+        [self.bear reloadData];
+        return;
+    }
+    
     [self.assets insertObject:asset atIndex:0];
     [self.undoAssets insertObject:asset atIndex:0];
     self.r1c++;
@@ -277,6 +125,7 @@
                                         ]
                      withRowAnimation:UITableViewRowAnimationFade];
     
+    [self letSynchronize];
     [self letCancel];
 }
 
@@ -450,7 +299,6 @@
     hair = (CRListTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CRListTableViewCellID] ? : [CRListTableViewCell new];
     
     hair.themeColor = [UIColor colorWithIndex:[asset.color intValue]];
-    hair.selected   = NO;
     
     if( indexPath.section == 0 ){
         
@@ -470,13 +318,16 @@
 }
 
 - (NSString *)timeString{
-    
     NSArray *m = @[
-                   @"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul", @"Aug", @"Sep", @"Oct", @"Nov", @"Dec"
+                   @"January", @"Febuary", @"March", @"April", @"May", @"June", @"July", @"August", @"September", @"October", @"November", @"December"
                    ];
     NSDateComponents *date = [TimeTalkerBird currentDate];
+    
+    NSString *(^fT)(NSUInteger) = ^(NSUInteger t){
+        return t < 10 ? [NSString stringWithFormat:@"0%ld", t] : [NSString stringWithFormat:@"%ld", t];
+    };
 
-    return [NSString stringWithFormat:@"%@ / %ld", [m objectAtIndex:date.month - 1], date.day];
+    return [NSString stringWithFormat:@"%@ %ld, %ld  %@:%@", [m objectAtIndex:date.month - 1], date.day, date.year, fT(date.hour), fT(date.minute)];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -489,25 +340,29 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self letAlertActionWithTitle:@"Done this item?" msg:nil
                               actionTitle:@"Done"
-                                tintColor:[UIColor colorWithIndex:5]
+                                tintColor:[UIColor colorWithIndex:[asset.color intValue]]
                                   handler:^(UIAlertAction *action){
                                       cell.listLabel.overline = YES;
                                       self.r1c--;
                                       self.r2c++;
                                       
+                                      [asset setCheckedTime:[self timeString]];
+                                      [cell setTimeString:asset.checkedTime];
+                                      
                                       [self.undoAssets removeObjectAtIndex:indexPath.row];
                                       [self.checkedAssets insertObject:asset atIndex:0];
-                                      [self.assets replaceObjectAtIndex:0 withObject:asset];
-                                      
-                                      [self.checkedAssets addObject:self.assets.firstObject];
+                                      [self.assets removeObject:asset];
+                                      [self.assets insertObject:asset atIndex:0];
+                                      [self letSynchronize];
                                       
                                       [tableView moveRowAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
-                                      cell.timeString   = [self timeString];
-                                      asset.checkedTime = cell.timeString;
-                                      cell.selected = NO;
+                                      
+                                      [cell setSelected:NO];
 
                                   } cancel:^(UIAlertAction *action){
-                                      cell.selected = NO;
+                                      
+                                      [cell setSelected:NO];
+                                      
                                   }];
         });
     }else{
@@ -517,22 +372,28 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self letAlertActionWithTitle:@"Are you sure want to recover this item?" msg:nil
                               actionTitle:@"Recover"
-                                tintColor:[UIColor colorWithIndex:0]
+                                tintColor:[UIColor colorWithIndex:[asset.color intValue]]
                                   handler:^(UIAlertAction *action){
                                       cell.listLabel.overline = NO;
                                       self.r1c++;
                                       self.r2c--;
                                       
+                                      cell.timeString = asset.checkedTime = nil;
+                                      
                                       [self.checkedAssets removeObjectAtIndex:indexPath.row];
                                       [self.undoAssets insertObject:asset atIndex:0];
-                                      [self.assets replaceObjectAtIndex:0 withObject:asset];
+                                      [self.assets removeObject:asset];
+                                      [self.assets insertObject:asset atIndex:0];
+                                      [self letSynchronize];
                                       
                                       [tableView moveRowAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-                                      cell.timeString = nil;
-                                      cell.selected = NO;
+                                      
+                                      [cell setSelected:NO];
 
                                   } cancel:^(UIAlertAction *action){
-                                      cell.selected = NO;
+                                      
+                                      [cell setSelected:NO];
+                                      
                                   }];
         });
     }
@@ -547,15 +408,6 @@
     UIAlertController *al = [UIAlertController alertControllerWithTitle:t message:m preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction     *ca = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:cancel];
     UIAlertAction     *ac = [UIAlertAction actionWithTitle:at style:UIAlertActionStyleDefault handler:handler];
-    
-    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:t];
-    [title addAttribute:NSFontAttributeName
-                  value:[UIFont systemFontOfSize:20 weight:UIFontWeightMedium]
-                  range:NSMakeRange(0, title.length)];
-    [title addAttribute:NSForegroundColorAttributeName
-                  value:tintColor
-                  range:NSMakeRange(0, title.length)];
-    [al setValue:title forKey:@"attributedTitle"];
     
     [al addAction:ac];
     [al addAction:ca];
