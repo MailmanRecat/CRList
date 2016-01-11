@@ -35,9 +35,59 @@
 
 @property( nonatomic, assign ) NSUInteger r1c;
 @property( nonatomic, assign ) NSUInteger r2c;
+
+@property( nonatomic, strong ) UIView *ground;
+@property( nonatomic, strong ) UIImageView *air;
+@property( nonatomic, strong ) NSLayoutConstraint *tc;
 @end
 
 @implementation ViewController
+
+- (void)letLoadAnimation{
+    
+    self.ground = ({
+        UIView *g = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        g.backgroundColor = [UIColor colorWithWhite:89 / 255.0 alpha:1];
+        [self.view addSubview:g];
+        g;
+    });
+    
+    self.air = ({
+        UIImageView *i = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"undoshape.png"]];
+        i.contentMode = UIViewContentModeScaleAspectFit;
+        i.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addSubview:i];
+        [i.widthAnchor constraintEqualToAnchor:self.view.widthAnchor].active = YES;
+        [i.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
+        [i.heightAnchor constraintEqualToAnchor:i.widthAnchor].active = YES;
+        self.tc = [i.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor];
+        self.tc.active = YES;
+        i;
+    });
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    if( self.ground && self.air ){
+    
+        self.tc.constant = -(self.view.frame.size.height + self.view.frame.size.width / 2);
+    
+        [UIView animateWithDuration:1
+                         animations:^{
+                         
+                             self.ground.alpha     = 0;
+                             [self.view layoutIfNeeded];
+                         
+                         }completion:^(BOOL f){
+                             [self.ground removeFromSuperview];
+                             [self.air removeFromSuperview];
+                         
+                             self.tc     = nil;
+                             self.ground = nil;
+                             self.air    = nil;
+                         }];
+    }
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -48,6 +98,8 @@
     [self letBear];
     [self letTextField];
     [self letObserver];
+    
+    [self letLoadAnimation];
 }
 
 - (void)setAssets:(NSMutableArray *)assets{
@@ -317,7 +369,6 @@
         
     }
     
-    NSLog(@"%d %d", hair.selected, hair.highlighted);
     hair.editing = NO;
     
     return hair;
@@ -438,7 +489,7 @@
     
     NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:t];
     [title addAttribute:NSFontAttributeName
-                  value:[UIFont systemFontOfSize:20 weight:UIFontWeightMedium]
+                  value:[UIFont systemFontOfSize:20 weight:UIFontWeightRegular]
                   range:NSMakeRange(0, title.length)];
         [title addAttribute:NSForegroundColorAttributeName
                       value:tintColor

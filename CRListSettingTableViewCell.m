@@ -30,14 +30,9 @@
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     self.setLabel = ({
-        UILabel *l = [[UILabel alloc] init];
+        UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(52, 0, self.bounds.size.width - 124, 44)];
         l.font = [UIFont systemFontOfSize:20 weight:UIFontWeightMedium];
-        l.translatesAutoresizingMaskIntoConstraints = NO;
         [self.contentView addSubview:l];
-        [l.topAnchor constraintEqualToAnchor:self.contentView.topAnchor].active = YES;
-        [l.leftAnchor constraintEqualToAnchor:self.contentView.leftAnchor constant:52].active = YES;
-        [l.rightAnchor constraintEqualToAnchor:self.contentView.rightAnchor constant:-72].active = YES;
-        [l.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor].active = YES;
         l;
     });
     

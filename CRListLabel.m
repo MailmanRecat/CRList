@@ -76,7 +76,7 @@
     
     if( animation )
         [UIView animateWithDuration:0.25
-                              delay:0.0f options:(7 << 16)
+                              delay:0.25f options:(7 << 16)
                          animations:^{
                              self.line.frame = CGRectMake(-8, (selfRect.size.height - lineHeight) / 2, 0, lineHeight);
                          }completion:nil];

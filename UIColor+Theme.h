@@ -11,5 +11,6 @@
 @interface UIColor (Theme)
 
 + (UIColor *)colorWithIndex:(int)i;
++ (UIColor *)colorWithHex:(uint32_t)hex alpha:(CGFloat)alpha;
 
 @end

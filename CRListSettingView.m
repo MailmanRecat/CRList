@@ -42,7 +42,7 @@
     self.showsHorizontalScrollIndicator = NO;
     self.showsVerticalScrollIndicator   = NO;
     self.backgroundColor = [UIColor clearColor];
-    self.separatorEffect = [UIVibrancyEffect effectForBlurEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
+//    self.separatorEffect = [UIVibrancyEffect effectForBlurEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
     self.separatorInset  = UIEdgeInsetsMake(0, 52, 0, 0);
     self.delegate = self;
     self.dataSource = self;
