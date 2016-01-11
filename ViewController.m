@@ -47,13 +47,13 @@
     
     self.ground = ({
         UIView *g = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-        g.backgroundColor = [UIColor colorWithWhite:89 / 255.0 alpha:1];
+        g.backgroundColor = [UIColor whiteColor];
         [self.view addSubview:g];
         g;
     });
     
     self.air = ({
-        UIImageView *i = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"undoshape.png"]];
+        UIImageView *i = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"undos.png"]];
         i.contentMode = UIViewContentModeScaleAspectFit;
         i.translatesAutoresizingMaskIntoConstraints = NO;
         [self.view addSubview:i];
@@ -72,7 +72,8 @@
     
         self.tc.constant = -(self.view.frame.size.height + self.view.frame.size.width / 2);
     
-        [UIView animateWithDuration:1
+        [UIView animateWithDuration:1.382
+                              delay:0.25 options:UIViewAnimationOptionCurveLinear
                          animations:^{
                          
                              self.ground.alpha     = 0;
@@ -156,17 +157,17 @@
 
 - (void)letItemAdd{
     
-    CRLIAsset *asset = [CRLIAsset defaultAsset];
-    asset.item  = self.tf.textField.text.length > 256 ? [self.tf.textField.text substringToIndex:256] : self.tf.textField.text;
-    asset.color = [NSString stringWithFormat:@"%ld", self.sv.selectedIndexPath.row];
-    
-    if( [self.tf.textField.text isEqualToString:@"com.mailman.crlist.clear"] ){
+    if( [self.tf.textField.text isEqualToString:@"app.execute.clear"] ){
         [CRLIAssetManager clearAllAssets:YES];
         [self setAssets:[CRLIAssetManager fetchAssets]];
         [self letCancel];
         [self.bear reloadData];
         return;
     }
+    
+    CRLIAsset *asset = [CRLIAsset defaultAsset];
+    asset.item  = self.tf.textField.text.length > 256 ? [self.tf.textField.text substringToIndex:256] : self.tf.textField.text;
+    asset.color = [NSString stringWithFormat:@"%ld", self.sv.selectedIndexPath.row];
     
     [self.assets insertObject:asset atIndex:0];
     [self.undoAssets insertObject:asset atIndex:0];
@@ -176,6 +177,8 @@
                                         [NSIndexPath indexPathForRow:0 inSection:0]
                                         ]
                      withRowAnimation:UITableViewRowAnimationFade];
+    
+    ((UILabel *)self.section1Header.subviews.firstObject).text = [NSString stringWithFormat:@"Todo ( %ld items )", self.r1c];
     
     [self letSynchronize];
     [self letCancel];
@@ -246,6 +249,8 @@
         bear.translatesAutoresizingMaskIntoConstraints = NO;
         bear.showsHorizontalScrollIndicator = NO;
         bear.showsVerticalScrollIndicator = NO;
+        bear.contentInset  = UIEdgeInsetsMake(8, 0, 0, 0);
+        bear.contentOffset = CGPointMake(0, -8);
         bear.backgroundColor = [UIColor clearColor];
         bear.separatorStyle = UITableViewCellSeparatorStyleNone;
         bear.allowsMultipleSelectionDuringEditing = NO;
@@ -308,17 +313,22 @@
     return YES;
 }
 
+- (void)updateHeaderView{
+    ((UILabel *)self.section1Header.subviews.firstObject).text = [NSString stringWithFormat:@"Todo ( %ld items )", self.r1c];
+    ((UILabel *)self.section2Header.subviews.firstObject).text = [NSString stringWithFormat:@"Done ( %ld items )", self.r2c];
+}
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
 
     if( section == 0 ){
         return self.section1Header ? : ({
-            self.section1Header = [self headerViewWithTitle:@"Todo"];
+            self.section1Header = [self headerViewWithTitle:[NSString stringWithFormat:@"Todo ( %ld items )", self.r1c]];
             ((UILabel *)self.section1Header.subviews.firstObject).textColor = [UIColor colorWithIndex:2];
             self.section1Header;
         });
     }else{
         return self.section2Header ? : ({
-            self.section2Header = [self headerViewWithTitle:@"Done"];
+            self.section2Header = [self headerViewWithTitle:[NSString stringWithFormat:@"Done ( %ld items )", self.r2c]];
             ((UILabel *)self.section2Header.subviews.firstObject).textColor = [UIColor colorWithIndex:0];
             self.section2Header;
         });
@@ -326,18 +336,19 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    if( scrollView.contentOffset.y < 0 && self.adjust ){
-        self.tfLayoutGuide.constant = fabs(scrollView.contentOffset.y) - 104 - STATUS_BAR_HEIGHT;
-        scrollView.alpha = 1 - fabs(scrollView.contentOffset.y) / (104 + STATUS_BAR_HEIGHT);
+    if( scrollView.contentOffset.y < -8 && self.adjust ){
+        self.tfLayoutGuide.constant = fabs(scrollView.contentOffset.y) - 112 - STATUS_BAR_HEIGHT;
+        scrollView.alpha = 1 - fabs(scrollView.contentOffset.y) / (112 + STATUS_BAR_HEIGHT);
         
-        if( scrollView.contentOffset.y < -( 104 + STATUS_BAR_HEIGHT ) ){
+        if( scrollView.contentOffset.y < -( 112 + STATUS_BAR_HEIGHT ) ){
             self.adjust = NO;
             self.tfLayoutGuide.constant = STATUS_BAR_HEIGHT;
             scrollView.hidden = YES;
             [self.tf.textField becomeFirstResponder];
             [self letSetting];
         }
-        
+    }else{
+        scrollView.alpha = 1;
     }
 }
 
@@ -368,8 +379,6 @@
         [hair.listLabel setOverline:YES animation:NO];
         
     }
-    
-    hair.editing = NO;
     
     return hair;
 }
@@ -414,11 +423,12 @@
                                       
                                       [tableView moveRowAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
                                       
-                                      [cell setSelected:NO];
+                                      [self updateHeaderView];
+                                      [tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] animated:NO];
 
                                   } cancel:^(UIAlertAction *action){
                                       
-                                      [cell setSelected:NO];
+                                      [tableView deselectRowAtIndexPath:indexPath animated:NO];
                                       
                                   }];
         });
@@ -445,11 +455,12 @@
                                       
                                       [tableView moveRowAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
                                       
-                                      [cell setSelected:NO];
+                                      [self updateHeaderView];
+                                      [tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO];
 
                                   } cancel:^(UIAlertAction *action){
                                       
-                                      [cell setSelected:NO];
+                                      [tableView deselectRowAtIndexPath:indexPath animated:NO];
                                       
                                   }];
         });
@@ -474,6 +485,7 @@
         [self letSynchronize];
         
         [tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationLeft];
+        [self updateHeaderView];
     }
 }
 

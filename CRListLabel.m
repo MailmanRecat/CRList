@@ -21,7 +21,7 @@
     if( self ){
         self.line = [[UIView alloc] init];
         self.line.layer.cornerRadius = 1;
-        self.numberOfLines = 1;
+        self.lineBreakMode = NSLineBreakByTruncatingMiddle;
     }
     return self;
 }

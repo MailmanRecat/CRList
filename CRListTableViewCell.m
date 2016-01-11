@@ -28,6 +28,7 @@
 
 - (void)initClass{
     self.backgroundColor = [UIColor clearColor];
+    self.selectionStyle  = UITableViewCellSelectionStyleDefault;
     
     self.icon = ({
         UILabel *i = [[UILabel alloc] init];
@@ -41,7 +42,7 @@
     self.listLabel = ({
         CRListLabel *l = [[CRListLabel alloc] init];
         l.numberOfLines = 1;
-        l.font = [UIFont systemFontOfSize:24 weight:UIFontWeightMedium];
+        l.font = [UIFont systemFontOfSize:21 weight:UIFontWeightMedium];
         l.translatesAutoresizingMaskIntoConstraints = NO;
         [self.contentView addSubview:l];
         [l.topAnchor constraintEqualToAnchor:self.contentView.topAnchor].active = YES;
@@ -98,6 +99,11 @@
         [self.timeLabel setText:nil];
         [self.icon setText:[UIFont mdiCheckboxBlankCircleOutline]];
     }
+}
+
+- (void)prepareForReuse{
+    self.editing  = NO;
+    self.selected = NO;
 }
 
 - (void)layoutSubviews{
