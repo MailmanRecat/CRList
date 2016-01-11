@@ -66,6 +66,13 @@
         [v.bottomAnchor constraintEqualToAnchor:visual.contentView.bottomAnchor].active = YES;
         visual;
     });
+    
+    self.timeLabel = ({
+        UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(64, 36, 256, 20)];
+        timeLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightRegular];
+        timeLabel.textColor = [UIColor colorWithWhite:1 alpha:0.9];
+        timeLabel;
+    });
 }
 
 - (void)setThemeColor:(UIColor *)themeColor{
@@ -76,22 +83,8 @@
 - (void)setTimeString:(NSString *)timeString{
     _timeString = timeString;
     
-    if( self.timeLabel == nil ){
-        self.timeLabel = ({
-            UILabel *timeLabel = [[UILabel alloc] init];
-            timeLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightRegular];
-            timeLabel.textColor = [UIColor colorWithWhite:1 alpha:0.9];
-            timeLabel.translatesAutoresizingMaskIntoConstraints = NO;
-            timeLabel;
-        });
-    }
-    
     if( [timeString isEqualToString:CRLIAssetCheckedTimeDefVal] == NO ){
         [self.contentView addSubview:self.timeLabel];
-        [self.timeLabel.topAnchor constraintEqualToAnchor:self.listLabel.bottomAnchor constant:-8].active = YES;
-        [self.timeLabel.leftAnchor constraintEqualToAnchor:self.contentView.leftAnchor constant:64].active = YES;
-        [self.timeLabel.heightAnchor constraintEqualToConstant:20].active = YES;
-        [self.timeLabel.rightAnchor constraintEqualToAnchor:self.contentView.rightAnchor constant:-16].active = YES;
         [self.timeLabel setText:timeString];
         [self.icon setText:[UIFont mdiCheckboxMarkedCircle]];
     }else{
@@ -103,12 +96,12 @@
 
 - (void)prepareForReuse{
     self.editing  = NO;
-    self.selected = NO;
 }
 
 - (void)layoutSubviews{
+    [super layoutSubviews];
+    
     self.icon.frame = CGRectMake(0, 0, 56, self.frame.size.height);
-    self.selectedBackgroundView.frame = self.bounds;
 }
 
 @end

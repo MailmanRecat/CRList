@@ -252,7 +252,9 @@
         bear.contentInset  = UIEdgeInsetsMake(8, 0, 0, 0);
         bear.contentOffset = CGPointMake(0, -8);
         bear.backgroundColor = [UIColor clearColor];
-        bear.separatorStyle = UITableViewCellSeparatorStyleNone;
+//        bear.separatorStyle = UITableViewCellSeparatorStyleNone;
+        bear.separatorEffect = [UIVibrancyEffect effectForBlurEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
+        bear.separatorInset  = UIEdgeInsetsMake(0, 64, 0, 0);
         bear.allowsMultipleSelectionDuringEditing = NO;
         bear.delegate = self;
         bear.dataSource = self;
@@ -338,7 +340,11 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     if( scrollView.contentOffset.y < -8 && self.adjust ){
         self.tfLayoutGuide.constant = fabs(scrollView.contentOffset.y) - 112 - STATUS_BAR_HEIGHT;
-        scrollView.alpha = 1 - fabs(scrollView.contentOffset.y) / (112 + STATUS_BAR_HEIGHT);
+//        scrollView.alpha = 1 - fabs(scrollView.contentOffset.y) / (112 + STATUS_BAR_HEIGHT);
+        
+//        if( scrollView.contentOffset.y < -92 ){
+//            scrollView.alpha = 1 - (fabs(scrollView.contentOffset.y) - 92) / (20 + STATUS_BAR_HEIGHT);
+//        }
         
         if( scrollView.contentOffset.y < -( 112 + STATUS_BAR_HEIGHT ) ){
             self.adjust = NO;
@@ -347,9 +353,10 @@
             [self.tf.textField becomeFirstResponder];
             [self letSetting];
         }
-    }else{
-        scrollView.alpha = 1;
     }
+//    else{
+//        scrollView.alpha = 1;
+//    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

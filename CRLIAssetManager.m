@@ -58,6 +58,98 @@ static NSString *const CRLIAssetsDatabaseKey = @"CR_LIST_ITEM_ASSETS_DATABASE_KE
     }
     
     return ass;
+//    return @[
+//             [[CRLIAsset assetFromDic:@{
+//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                              CRLIAssetItemDicKey: @"Check Email",
+//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                              CRLIAssetColorDicKey: CRLIAssetColorDefVal
+//                                              }],
+//              [[CRLIAsset assetFromDic:@{
+//                                         CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                         CRLIAssetItemDicKey: @"",
+//                                         CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                         CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                         CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                         CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                         CRLIAssetColorDicKey: CRLIAssetColorDefVal
+//                                         }],
+//               [[CRLIAsset assetFromDic:@{
+//                                          CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                          CRLIAssetItemDicKey: CRLIAssetItemDefVal,
+//                                          CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                          CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                          CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                          CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                          CRLIAssetColorDicKey: CRLIAssetColorDefVal
+//                                          }],
+//                [[CRLIAsset assetFromDic:@{
+//                                           CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                           CRLIAssetItemDicKey: CRLIAssetItemDefVal,
+//                                           CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                           CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                           CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                           CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                           CRLIAssetColorDicKey: CRLIAssetColorDefVal
+//                                           }],
+//                 [[CRLIAsset assetFromDic:@{
+//                                            CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                            CRLIAssetItemDicKey: CRLIAssetItemDefVal,
+//                                            CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                            CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                            CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                            CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                            CRLIAssetColorDicKey: CRLIAssetColorDefVal
+//                                            }],
+//                  [[CRLIAsset assetFromDic:@{
+//                                             CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                             CRLIAssetItemDicKey: CRLIAssetItemDefVal,
+//                                             CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                             CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                             CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                             CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                             CRLIAssetColorDicKey: CRLIAssetColorDefVal
+//                                             }],
+//                   [[CRLIAsset assetFromDic:@{
+//                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                              CRLIAssetItemDicKey: CRLIAssetItemDefVal,
+//                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                              CRLIAssetColorDicKey: CRLIAssetColorDefVal
+//                                              }],
+//                    [[CRLIAsset assetFromDic:@{
+//                                               CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                               CRLIAssetItemDicKey: CRLIAssetItemDefVal,
+//                                               CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                               CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                               CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                               CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                               CRLIAssetColorDicKey: CRLIAssetColorDefVal
+//                                               }],
+//                     [[CRLIAsset assetFromDic:@{
+//                                                CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                                CRLIAssetItemDicKey: CRLIAssetItemDefVal,
+//                                                CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                                CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                                CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                                CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                                CRLIAssetColorDicKey: CRLIAssetColorDefVal
+//                                                }],
+//                      [[CRLIAsset assetFromDic:@{
+//                                                 CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                                 CRLIAssetItemDicKey: CRLIAssetItemDefVal,
+//                                                 CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                                 CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                                 CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                                 CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                                 CRLIAssetColorDicKey: CRLIAssetColorDefVal
+//                                                 }],
+//             ];
 }
 
 + (BOOL)updateAssets:(NSMutableArray *)assets{
