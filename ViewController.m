@@ -14,13 +14,15 @@
 #import "CRListSettingView.h"
 #import "UIColor+Theme.h"
 #import "CRLIAssetManager.h"
-#import "TimeTalkerBird.h"
+#import "Craig.h"
 
 @interface ViewController()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 
 @property( nonatomic, strong ) UITableView *bear;
-@property( nonatomic, strong ) UIView *section1Header;
-@property( nonatomic, strong ) UIView *section2Header;
+@property( nonatomic, strong ) UIVisualEffectView *section1Header;
+@property( nonatomic, strong ) UIVisualEffectView *section2Header;
+@property( nonatomic, strong ) UILabel *section1HeaderTitle;
+@property( nonatomic, strong ) UILabel *section2HeaderTitle;
 
 @property( nonatomic, strong ) CRListTextField *tf;
 @property( nonatomic, assign ) BOOL adjust;
@@ -178,8 +180,8 @@
                                         ]
                      withRowAnimation:UITableViewRowAnimationFade];
     
-    ((UILabel *)self.section1Header.subviews.firstObject).text = [NSString stringWithFormat:@"Todo ( %ld items )", self.r1c];
-    
+    self.section1HeaderTitle.text = [NSString stringWithFormat:@"Todo ( %ld items )", self.r1c];
+
     [self letSynchronize];
     [self letCancel];
 }
@@ -252,7 +254,6 @@
         bear.contentInset  = UIEdgeInsetsMake(8, 0, 0, 0);
         bear.contentOffset = CGPointMake(0, -8);
         bear.backgroundColor = [UIColor clearColor];
-//        bear.separatorStyle = UITableViewCellSeparatorStyleNone;
         bear.separatorEffect = [UIVibrancyEffect effectForBlurEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
         bear.separatorInset  = UIEdgeInsetsMake(0, 64, 0, 0);
         bear.allowsMultipleSelectionDuringEditing = NO;
@@ -280,7 +281,7 @@
     if( indexPath.section == 0 )
         return 44.0f;
     else
-        return 60.0f;
+        return 68.0f;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
@@ -291,47 +292,38 @@
     return 36.0f;
 }
 
-- (UIView *)headerViewWithTitle:(NSString *)title{
-    UIView *content = [[UIView alloc] init];
-    
-    UILabel *label = ({
-        UILabel *l = [[UILabel alloc] init];
-        l.translatesAutoresizingMaskIntoConstraints = NO;
-        l.text = title;
-        l.font = [UIFont systemFontOfSize:21 weight:UIFontWeightMedium];
-        l;
-    });
-    
-    [content addSubview:label];
-    [label.topAnchor constraintEqualToAnchor:content.topAnchor].active = YES;
-    [label.leftAnchor constraintEqualToAnchor:content.leftAnchor constant:16].active = YES;
-    [label.rightAnchor constraintEqualToAnchor:content.rightAnchor].active = YES;
-    [label.bottomAnchor constraintEqualToAnchor:content.bottomAnchor].active = YES;
-    
-    return content;
-}
-
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
     return YES;
 }
 
 - (void)updateHeaderView{
-    ((UILabel *)self.section1Header.subviews.firstObject).text = [NSString stringWithFormat:@"Todo ( %ld items )", self.r1c];
-    ((UILabel *)self.section2Header.subviews.firstObject).text = [NSString stringWithFormat:@"Done ( %ld items )", self.r2c];
+    self.section1HeaderTitle.text = [NSString stringWithFormat:@"Todo ( %ld items )", self.r1c];
+    self.section2HeaderTitle.text = [NSString stringWithFormat:@"Done ( %ld items )", self.r2c];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
 
     if( section == 0 ){
         return self.section1Header ? : ({
-            self.section1Header = [self headerViewWithTitle:[NSString stringWithFormat:@"Todo ( %ld items )", self.r1c]];
-            ((UILabel *)self.section1Header.subviews.firstObject).textColor = [UIColor colorWithIndex:2];
+            self.section1Header = [Craig headerViewWithTitle:[NSString stringWithFormat:@"Todo ( %ld items )", self.r1c]];
+            [self.section1Header.contentView.subviews enumerateObjectsUsingBlock:^(UIView *v, NSUInteger ind, BOOL *sS){
+                if( [v isKindOfClass:[UILabel class]] ){
+                    self.section1HeaderTitle = (UILabel *)v;
+                    *sS = YES;
+                }
+            }];
             self.section1Header;
         });
     }else{
         return self.section2Header ? : ({
-            self.section2Header = [self headerViewWithTitle:[NSString stringWithFormat:@"Done ( %ld items )", self.r2c]];
-            ((UILabel *)self.section2Header.subviews.firstObject).textColor = [UIColor colorWithIndex:0];
+            self.section2Header = [Craig headerViewWithTitle:[NSString stringWithFormat:@"Done ( %ld items )", self.r2c]];
+            [self.section2Header.contentView.subviews enumerateObjectsUsingBlock:^(UIView *v, NSUInteger ind, BOOL *sS){
+                if( [v isKindOfClass:[UILabel class]] ){
+                    self.section2HeaderTitle = (UILabel *)v;
+                    *sS = YES;
+                }
+            }];
+
             self.section2Header;
         });
     }
@@ -340,11 +332,6 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     if( scrollView.contentOffset.y < -8 && self.adjust ){
         self.tfLayoutGuide.constant = fabs(scrollView.contentOffset.y) - 112 - STATUS_BAR_HEIGHT;
-//        scrollView.alpha = 1 - fabs(scrollView.contentOffset.y) / (112 + STATUS_BAR_HEIGHT);
-        
-//        if( scrollView.contentOffset.y < -92 ){
-//            scrollView.alpha = 1 - (fabs(scrollView.contentOffset.y) - 92) / (20 + STATUS_BAR_HEIGHT);
-//        }
         
         if( scrollView.contentOffset.y < -( 112 + STATUS_BAR_HEIGHT ) ){
             self.adjust = NO;
@@ -354,9 +341,6 @@
             [self letSetting];
         }
     }
-//    else{
-//        scrollView.alpha = 1;
-//    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -390,19 +374,6 @@
     return hair;
 }
 
-- (NSString *)timeString{
-    NSArray *m = @[
-                   @"January", @"Febuary", @"March", @"April", @"May", @"June", @"July", @"August", @"September", @"October", @"November", @"December"
-                   ];
-    NSDateComponents *date = [TimeTalkerBird currentDate];
-    
-    NSString *(^fT)(NSUInteger) = ^(NSUInteger t){
-        return t < 10 ? [NSString stringWithFormat:@"0%ld", t] : [NSString stringWithFormat:@"%ld", t];
-    };
-
-    return [NSString stringWithFormat:@"%@ %ld, %ld  %@:%@", [m objectAtIndex:date.month - 1], date.day, date.year, fT(date.hour), fT(date.minute)];
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     CRListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
@@ -419,7 +390,7 @@
                                       self.r1c--;
                                       self.r2c++;
                                       
-                                      [asset setCheckedTime:[self timeString]];
+                                      [asset setCheckedTime:[Craig timeString]];
                                       [cell setTimeString:asset.checkedTime];
                                       
                                       [self.undoAssets removeObjectAtIndex:indexPath.row];

@@ -42,7 +42,7 @@
     self.listLabel = ({
         CRListLabel *l = [[CRListLabel alloc] init];
         l.numberOfLines = 1;
-        l.font = [UIFont systemFontOfSize:21 weight:UIFontWeightMedium];
+        l.font = [UIFont systemFontOfSize:21 weight:UIFontWeightLight];
         l.translatesAutoresizingMaskIntoConstraints = NO;
         [self.contentView addSubview:l];
         [l.topAnchor constraintEqualToAnchor:self.contentView.topAnchor].active = YES;
@@ -69,7 +69,7 @@
     
     self.timeLabel = ({
         UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(64, 36, 256, 20)];
-        timeLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightRegular];
+        timeLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightLight];
         timeLabel.textColor = [UIColor colorWithWhite:1 alpha:0.9];
         timeLabel;
     });
