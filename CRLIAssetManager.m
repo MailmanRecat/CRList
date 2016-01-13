@@ -58,8 +58,8 @@ static NSString *const CRLIAssetsDatabaseKey = @"CR_LIST_ITEM_ASSETS_DATABASE_KE
     }
     
     return ass;
-//    return @[
-//             [[CRLIAsset assetFromDic:@{
+//    NSArray *test = @[
+//             [CRLIAsset assetFromDic:@{
 //                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
 //                                              CRLIAssetItemDicKey: @"Check Email",
 //                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
@@ -68,88 +68,144 @@ static NSString *const CRLIAssetsDatabaseKey = @"CR_LIST_ITEM_ASSETS_DATABASE_KE
 //                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
 //                                              CRLIAssetColorDicKey: CRLIAssetColorDefVal
 //                                              }],
-//              [[CRLIAsset assetFromDic:@{
+//              [CRLIAsset assetFromDic:@{
 //                                         CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                         CRLIAssetItemDicKey: @"",
+//                                         CRLIAssetItemDicKey: @"Make video film",
 //                                         CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
 //                                         CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
 //                                         CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
 //                                         CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                         CRLIAssetColorDicKey: CRLIAssetColorDefVal
+//                                         CRLIAssetColorDicKey: @"1"
 //                                         }],
-//               [[CRLIAsset assetFromDic:@{
+//               [CRLIAsset assetFromDic:@{
 //                                          CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                          CRLIAssetItemDicKey: CRLIAssetItemDefVal,
+//                                          CRLIAssetItemDicKey: @"Pick up steven at 3:00pm",
 //                                          CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
 //                                          CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
 //                                          CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
 //                                          CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                          CRLIAssetColorDicKey: CRLIAssetColorDefVal
+//                                          CRLIAssetColorDicKey: @"2"
 //                                          }],
-//                [[CRLIAsset assetFromDic:@{
+//                [CRLIAsset assetFromDic:@{
 //                                           CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                           CRLIAssetItemDicKey: CRLIAssetItemDefVal,
+//                                           CRLIAssetItemDicKey: @"Send msg to chen",
 //                                           CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
 //                                           CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
 //                                           CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
 //                                           CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                           CRLIAssetColorDicKey: CRLIAssetColorDefVal
+//                                           CRLIAssetColorDicKey: @"3"
 //                                           }],
-//                 [[CRLIAsset assetFromDic:@{
+//                 [CRLIAsset assetFromDic:@{
 //                                            CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                            CRLIAssetItemDicKey: CRLIAssetItemDefVal,
+//                                            CRLIAssetItemDicKey: @"Prepare new year gift",
 //                                            CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
 //                                            CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
 //                                            CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
 //                                            CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                            CRLIAssetColorDicKey: CRLIAssetColorDefVal
+//                                            CRLIAssetColorDicKey: @"4"
 //                                            }],
-//                  [[CRLIAsset assetFromDic:@{
+//                  [CRLIAsset assetFromDic:@{
 //                                             CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                             CRLIAssetItemDicKey: CRLIAssetItemDefVal,
+//                                             CRLIAssetItemDicKey: @"Prepare for meetting",
 //                                             CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
 //                                             CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
 //                                             CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
 //                                             CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                             CRLIAssetColorDicKey: CRLIAssetColorDefVal
+//                                             CRLIAssetColorDicKey: @"5"
 //                                             }],
-//                   [[CRLIAsset assetFromDic:@{
+//                   [CRLIAsset assetFromDic:@{
 //                                              CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                              CRLIAssetItemDicKey: CRLIAssetItemDefVal,
+//                                              CRLIAssetItemDicKey: @"contact Lily",
 //                                              CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
 //                                              CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
 //                                              CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
 //                                              CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                              CRLIAssetColorDicKey: CRLIAssetColorDefVal
+//                                              CRLIAssetColorDicKey: @"6"
 //                                              }],
-//                    [[CRLIAsset assetFromDic:@{
+//                    [CRLIAsset assetFromDic:@{
 //                                               CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                               CRLIAssetItemDicKey: CRLIAssetItemDefVal,
+//                                               CRLIAssetItemDicKey: @"Fix bike",
 //                                               CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
 //                                               CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
 //                                               CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
 //                                               CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                               CRLIAssetColorDicKey: CRLIAssetColorDefVal
+//                                               CRLIAssetColorDicKey: @"7"
 //                                               }],
-//                     [[CRLIAsset assetFromDic:@{
+//                     [CRLIAsset assetFromDic:@{
 //                                                CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                                CRLIAssetItemDicKey: CRLIAssetItemDefVal,
+//                                                CRLIAssetItemDicKey: @"Meeting with craig",
 //                                                CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
 //                                                CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-//                                                CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                                CRLIAssetCheckedTimeDicKey: @"January 11, 2016 13:45",
 //                                                CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                                CRLIAssetColorDicKey: CRLIAssetColorDefVal
+//                                                CRLIAssetColorDicKey: @"7"
 //                                                }],
-//                      [[CRLIAsset assetFromDic:@{
+//                      [CRLIAsset assetFromDic:@{
 //                                                 CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
-//                                                 CRLIAssetItemDicKey: CRLIAssetItemDefVal,
+//                                                 CRLIAssetItemDicKey: @"Write news page",
 //                                                 CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
 //                                                 CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
-//                                                 CRLIAssetCheckedTimeDicKey: CRLIAssetCheckedTimeDefVal,
+//                                                 CRLIAssetCheckedTimeDicKey: @"January 11, 2016 9:51",
 //                                                 CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
-//                                                 CRLIAssetColorDicKey: CRLIAssetColorDefVal
+//                                                 CRLIAssetColorDicKey: @"6"
 //                                                 }],
+//             [CRLIAsset assetFromDic:@{
+//                                       CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                       CRLIAssetItemDicKey: @"Art class",
+//                                       CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                       CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                       CRLIAssetCheckedTimeDicKey: @"January 9, 2016 15:35",
+//                                       CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                       CRLIAssetColorDicKey: @"5"
+//                                       }],
+//             [CRLIAsset assetFromDic:@{
+//                                       CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                       CRLIAssetItemDicKey: @"Teach mike how to use snapshot",
+//                                       CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                       CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                       CRLIAssetCheckedTimeDicKey: @"January 9, 2016 9:51",
+//                                       CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                       CRLIAssetColorDicKey: @"4"
+//                                       }],
+//             [CRLIAsset assetFromDic:@{
+//                                       CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                       CRLIAssetItemDicKey: @"Go runing",
+//                                       CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                       CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                       CRLIAssetCheckedTimeDicKey: @"January 8, 2016 15:00",
+//                                       CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                       CRLIAssetColorDicKey: @"3"
+//                                       }],
+//             [CRLIAsset assetFromDic:@{
+//                                       CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                       CRLIAssetItemDicKey: @"Meeting with craig",
+//                                       CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                       CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                       CRLIAssetCheckedTimeDicKey: @"January 8, 2016 10:20",
+//                                       CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                       CRLIAssetColorDicKey: @"0"
+//                                       }],
+//             [CRLIAsset assetFromDic:@{
+//                                       CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                       CRLIAssetItemDicKey: @"Try Mexico food",
+//                                       CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                       CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                       CRLIAssetCheckedTimeDicKey: @"January 7, 2016 20:10",
+//                                       CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                       CRLIAssetColorDicKey: @"1"
+//                                       }],
+//             [CRLIAsset assetFromDic:@{
+//                                       CRLIAssetTokenDicKey: CRLIAssetTokenDefVal,
+//                                       CRLIAssetItemDicKey: @"Meeting with craig",
+//                                       CRLIAssetAskBeforeCheckDicKey: CRLIAssetAskBeforeCheckDefVal,
+//                                       CRLIAssetShowBadgeNumberDicKey: CRLIAssetShowBadgeNumberDefVal,
+//                                       CRLIAssetCheckedTimeDicKey: @"January 6, 2016 10:40",
+//                                       CRLIAssetAlertTimeDicKey: CRLIAssetAlertTimeDefVal,
+//                                       CRLIAssetColorDicKey: @"0"
+//                                       }]
 //             ];
+//    
+//    return [[NSMutableArray alloc] initWithArray:test];
 }
 
 + (BOOL)updateAssets:(NSMutableArray *)assets{

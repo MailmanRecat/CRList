@@ -31,7 +31,7 @@
     
     self.setLabel = ({
         UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(52, 0, self.bounds.size.width - 124, 44)];
-        l.font = [UIFont systemFontOfSize:20 weight:UIFontWeightMedium];
+        l.font = [UIFont systemFontOfSize:20 weight:UIFontWeightLight];
         [self.contentView addSubview:l];
         l;
     });

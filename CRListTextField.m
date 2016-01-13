@@ -58,7 +58,7 @@
     self.title = ({
         UILabel *t = [[UILabel alloc] initWithFrame:CGRectMake(56, 0, 280, 54)];
         t.userInteractionEnabled = NO;
-        t.font = [UIFont systemFontOfSize:24 weight:UIFontWeightMedium];
+        t.font = [UIFont systemFontOfSize:24 weight:UIFontWeightLight];
         t.text = @"Add todo";
         [self.visual.contentView addSubview:t];
         t;
@@ -80,7 +80,9 @@
     
     self.textField = ({
         UITextField *tf = [[UITextField alloc] init];
-        tf.backgroundColor = [UIColor colorWithWhite:0 alpha:0.7];
+        tf.backgroundColor = [UIColor colorWithWhite:0 alpha:1];
+        tf.layer.borderColor = [UIColor whiteColor].CGColor;
+        tf.layer.borderWidth = 1;
         tf.leftViewMode = UITextFieldViewModeAlways;
         tf.keyboardAppearance = UIKeyboardAppearanceDark;
         tf.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8, 0)];
@@ -90,11 +92,11 @@
         tf.layer.cornerRadius = 4.0f;
         tf.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"do..." attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
         tf.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:tf];
+        [self.visual.contentView addSubview:tf];
         [tf.heightAnchor constraintEqualToConstant:32].active = YES;
-        [tf.leftAnchor constraintEqualToAnchor:self.leftAnchor constant:8].active = YES;
-        [tf.rightAnchor constraintEqualToAnchor:self.rightAnchor constant:-72].active = YES;
-        [tf.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-9].active = YES;
+        [tf.leftAnchor constraintEqualToAnchor:self.visual.contentView.leftAnchor constant:8].active = YES;
+        [tf.rightAnchor constraintEqualToAnchor:self.visual.contentView.rightAnchor constant:-72].active = YES;
+        [tf.bottomAnchor constraintEqualToAnchor:self.visual.contentView.bottomAnchor constant:-9].active = YES;
         [tf addTarget:self action:@selector(textFieldOnEdit:) forControlEvents:UIControlEventAllEditingEvents];
         tf;
     });

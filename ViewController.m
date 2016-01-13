@@ -15,8 +15,9 @@
 #import "UIColor+Theme.h"
 #import "CRLIAssetManager.h"
 #import "Craig.h"
+#import "CRPreviewController.h"
 
-@interface ViewController()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
+@interface ViewController()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UIViewControllerPreviewingDelegate, CRPreviewControllerActionDelegate>
 
 @property( nonatomic, strong ) UITableView *bear;
 @property( nonatomic, strong ) UIVisualEffectView *section1Header;
@@ -44,6 +45,21 @@
 @end
 
 @implementation ViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self.view setBackgroundColor:[UIColor clearColor]];
+    [self setAdjust:YES];
+    [self setAssets:[CRLIAssetManager fetchAssets]];
+    [self letBear];
+    [self letTextField];
+    
+    [self let3DTouch];
+    [self letObserver];
+    
+    [self letLoadAnimation];
+}
 
 - (void)letLoadAnimation{
     
@@ -92,17 +108,50 @@
     }
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit{
     
-    [self.view setBackgroundColor:[UIColor clearColor]];
-    [self setAdjust:YES];
-    [self setAssets:[CRLIAssetManager fetchAssets]];
-    [self letBear];
-    [self letTextField];
-    [self letObserver];
+}
+
+- (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location{
+    NSIndexPath *indexPath = [self.bear indexPathForRowAtPoint:location];
+    if( indexPath == nil ) return nil;
     
-    [self letLoadAnimation];
+    CRListTableViewCell *hair = [self.bear cellForRowAtIndexPath:indexPath];
+    previewingContext.sourceRect = hair.frame;
+    
+    CRPreviewController *previewController = [[CRPreviewController alloc] init];
+    previewController.title = indexPath.section == 0 ? ((CRLIAsset *)self.undoAssets[indexPath.row]).item : ((CRLIAsset *)self.checkedAssets[indexPath.row]).item;
+    
+    previewController.indexPath = indexPath;
+    previewController.delegate  = self;
+    
+    return previewController;
+}
+
+- (void)CRPreviewAction:(NSString *)type fromController:(UIViewController *)controller{
+    if( [type isEqualToString:@"Delete"] ){
+        
+        [self letDelete:self.bear atIndexPath:((CRPreviewController *)controller).indexPath];
+        
+    }else if( [type isEqualToString:@"Done"] ){
+        
+        [self letDone:self.bear atIndexPath:((CRPreviewController *)controller).indexPath];
+        
+    }else if( [type isEqualToString:@"Recover"] ){
+        
+        [self letRecover:self.bear atIndexPath:((CRPreviewController *)controller).indexPath];
+        
+    }
+}
+
+- (void)let3DTouch{
+    BOOL support3DTouch = YES;
+    
+    if( self.traitCollection.forceTouchCapability != UIForceTouchCapabilityAvailable ) support3DTouch = NO;
+    if( ![self.traitCollection respondsToSelector:@selector(forceTouchCapability)] ) support3DTouch = NO;
+    
+    if( support3DTouch )
+        [self registerForPreviewingWithDelegate:self sourceView:self.bear];
 }
 
 - (void)setAssets:(NSMutableArray *)assets{
@@ -180,7 +229,7 @@
                                         ]
                      withRowAnimation:UITableViewRowAnimationFade];
     
-    self.section1HeaderTitle.text = [NSString stringWithFormat:@"Todo ( %ld items )", self.r1c];
+    self.section1HeaderTitle.text = [NSString stringWithFormat:@"Todo ( %ld %@ )", self.r1c, self.r1c > 1 ? @"items" : @"item"];
 
     [self letSynchronize];
     [self letCancel];
@@ -297,8 +346,8 @@
 }
 
 - (void)updateHeaderView{
-    self.section1HeaderTitle.text = [NSString stringWithFormat:@"Todo ( %ld items )", self.r1c];
-    self.section2HeaderTitle.text = [NSString stringWithFormat:@"Done ( %ld items )", self.r2c];
+    self.section1HeaderTitle.text = [NSString stringWithFormat:@"Todo ( %ld %@ )", self.r1c, self.r1c > 1 ? @"items" : @"item"];
+    self.section2HeaderTitle.text = [NSString stringWithFormat:@"Done ( %ld %@ )", self.r2c, self.r1c > 1 ? @"items" : @"item"];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -375,72 +424,20 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    CRListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
     if( indexPath.section == 0 ){
         
-        CRLIAsset *asset = [self.undoAssets objectAtIndex:indexPath.row];
-        
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self letAlertActionWithTitle:@"Done this item?" msg:nil
-                              actionTitle:@"Done"
-                                tintColor:[UIColor colorWithIndex:[asset.color intValue]]
-                                  handler:^(UIAlertAction *action){
-                                      cell.listLabel.overline = YES;
-                                      self.r1c--;
-                                      self.r2c++;
-                                      
-                                      [asset setCheckedTime:[Craig timeString]];
-                                      [cell setTimeString:asset.checkedTime];
-                                      
-                                      [self.undoAssets removeObjectAtIndex:indexPath.row];
-                                      [self.checkedAssets insertObject:asset atIndex:0];
-                                      [self.assets removeObject:asset];
-                                      [self.assets insertObject:asset atIndex:0];
-                                      [self letSynchronize];
-                                      
-                                      [tableView moveRowAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
-                                      
-                                      [self updateHeaderView];
-                                      [tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] animated:NO];
-
-                                  } cancel:^(UIAlertAction *action){
-                                      
-                                      [tableView deselectRowAtIndexPath:indexPath animated:NO];
-                                      
-                                  }];
+            
+            [self letDone:tableView atIndexPath:indexPath];
+            
         });
     }else{
-        
-        CRLIAsset *asset = [self.checkedAssets objectAtIndex:indexPath.row];
 
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self letAlertActionWithTitle:@"Are you sure want to recover this item?" msg:nil
-                              actionTitle:@"Recover"
-                                tintColor:[UIColor colorWithIndex:[asset.color intValue]]
-                                  handler:^(UIAlertAction *action){
-                                      cell.listLabel.overline = NO;
-                                      self.r1c++;
-                                      self.r2c--;
-                                      
-                                      cell.timeString = asset.checkedTime = CRLIAssetCheckedTimeDefVal;
-                                      
-                                      [self.checkedAssets removeObjectAtIndex:indexPath.row];
-                                      [self.undoAssets insertObject:asset atIndex:0];
-                                      [self.assets removeObject:asset];
-                                      [self.assets insertObject:asset atIndex:0];
-                                      [self letSynchronize];
-                                      
-                                      [tableView moveRowAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-                                      
-                                      [self updateHeaderView];
-                                      [tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO];
-
-                                  } cancel:^(UIAlertAction *action){
-                                      
-                                      [tableView deselectRowAtIndexPath:indexPath animated:NO];
-                                      
-                                  }];
+            
+            [self letRecover:tableView atIndexPath:indexPath];
+            
         });
     }
 }
@@ -449,22 +446,93 @@
                                             forRowAtIndexPath:(NSIndexPath *)indexPath{
     if( editingStyle == UITableViewCellEditingStyleDelete ){
         
-        CRLIAsset *editingAsset = indexPath.section == 0 ? self.undoAssets[indexPath.row] : self.checkedAssets[indexPath.row];
+        [self letDelete:tableView atIndexPath:indexPath];
         
-        if( indexPath.section == 0 ){
-            self.r1c--;
-            [self.undoAssets removeObject:editingAsset];
-        }else{
-            self.r2c--;
-            [self.checkedAssets removeObject:editingAsset];
-        }
-        
-        [self.assets removeObject:editingAsset];
-        [self letSynchronize];
-        
-        [tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationLeft];
-        [self updateHeaderView];
     }
+}
+
+- (void)letDone:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
+    CRListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    CRLIAsset *asset = [self.undoAssets objectAtIndex:indexPath.row];
+    
+    [self letAlertActionWithTitle:@"Done this item?" msg:nil
+                      actionTitle:@"Done"
+                        tintColor:[UIColor colorWithIndex:[asset.color intValue]]
+                          handler:^(UIAlertAction *action){
+                              cell.listLabel.overline = YES;
+                              self.r1c--;
+                              self.r2c++;
+                              
+                              [asset setCheckedTime:[Craig timeString]];
+                              [cell setTimeString:asset.checkedTime];
+                              
+                              [self.undoAssets removeObjectAtIndex:indexPath.row];
+                              [self.checkedAssets insertObject:asset atIndex:0];
+                              [self.assets removeObject:asset];
+                              [self.assets insertObject:asset atIndex:0];
+                              [self letSynchronize];
+                              
+                              [tableView moveRowAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+                              
+                              [self updateHeaderView];
+                              [tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] animated:NO];
+                              
+                          } cancel:^(UIAlertAction *action){
+                              
+                              [tableView deselectRowAtIndexPath:indexPath animated:NO];
+                              
+                          }];
+}
+
+- (void)letRecover:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
+    CRListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    CRLIAsset *asset = [self.checkedAssets objectAtIndex:indexPath.row];
+    
+    [self letAlertActionWithTitle:@"Are you sure want to recover this item?" msg:nil
+                      actionTitle:@"Recover"
+                        tintColor:[UIColor colorWithIndex:[asset.color intValue]]
+                          handler:^(UIAlertAction *action){
+                              cell.listLabel.overline = NO;
+                              self.r1c++;
+                              self.r2c--;
+                              
+                              cell.timeString = asset.checkedTime = CRLIAssetCheckedTimeDefVal;
+                              
+                              [self.checkedAssets removeObjectAtIndex:indexPath.row];
+                              [self.undoAssets insertObject:asset atIndex:0];
+                              [self.assets removeObject:asset];
+                              [self.assets insertObject:asset atIndex:0];
+                              [self letSynchronize];
+                              
+                              [tableView moveRowAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                              
+                              [self updateHeaderView];
+                              [tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO];
+                              
+                          } cancel:^(UIAlertAction *action){
+                              
+                              [tableView deselectRowAtIndexPath:indexPath animated:NO];
+                              
+                          }];
+
+}
+
+- (void)letDelete:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
+    CRLIAsset *editingAsset = indexPath.section == 0 ? self.undoAssets[indexPath.row] : self.checkedAssets[indexPath.row];
+    
+    if( indexPath.section == 0 ){
+        self.r1c--;
+        [self.undoAssets removeObject:editingAsset];
+    }else{
+        self.r2c--;
+        [self.checkedAssets removeObject:editingAsset];
+    }
+    
+    [self.assets removeObject:editingAsset];
+    [self letSynchronize];
+    
+    [tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationLeft];
+    [self updateHeaderView];
 }
 
 - (void)letAlertActionWithTitle:(NSString *)t

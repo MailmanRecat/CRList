@@ -86,7 +86,7 @@
     if( [timeString isEqualToString:CRLIAssetCheckedTimeDefVal] == NO ){
         [self.contentView addSubview:self.timeLabel];
         [self.timeLabel setText:timeString];
-        [self.icon setText:[UIFont mdiCheckboxMarkedCircle]];
+        [self.icon setText:[UIFont mdiCheckboxMarkedCircleOutline]];
     }else{
         [self.timeLabel removeFromSuperview];
         [self.timeLabel setText:nil];
