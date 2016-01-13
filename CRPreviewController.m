@@ -36,13 +36,13 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    UIVisualEffectView *visual = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    UIVisualEffectView *visual = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]];
     visual.frame = self.view.frame;
     visual.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     [self.view addSubview:visual];
     
-    UIVisualEffectView *vibual = [[UIVisualEffectView alloc] initWithEffect:[UIVibrancyEffect effectForBlurEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]]];
+    UIVisualEffectView *vibual = [[UIVisualEffectView alloc] initWithEffect:[UIVibrancyEffect effectForBlurEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]]];
     vibual.frame = self.view.frame;
     vibual.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:vibual];
@@ -59,7 +59,7 @@
     [vibual.contentView addSubview:text];
     
     text.text = self.title;
-    text.font = [UIFont systemFontOfSize:48 weight:UIFontWeightThin];
+    text.font = [UIFont systemFontOfSize:64 weight:UIFontWeightThin];
     text.textAlignment = NSTextAlignmentCenter;
     text.textColor = [UIColor whiteColor];
     text.adjustsFontSizeToFitWidth = YES;

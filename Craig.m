@@ -28,7 +28,7 @@
     UIVisualEffectView *content = [[UIVisualEffectView alloc] initWithEffect:eff];
     
     UILabel *label = ({
-        UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, 256, 36)];
+        UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, 256, 44)];
         l.text = title;
         l.font = [UIFont systemFontOfSize:21 weight:UIFontWeightLight];
         l;

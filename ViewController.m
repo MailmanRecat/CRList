@@ -300,8 +300,7 @@
         bear.translatesAutoresizingMaskIntoConstraints = NO;
         bear.showsHorizontalScrollIndicator = NO;
         bear.showsVerticalScrollIndicator = NO;
-        bear.contentInset  = UIEdgeInsetsMake(8, 0, 0, 0);
-        bear.contentOffset = CGPointMake(0, -8);
+        bear.sectionFooterHeight = 0.0f;
         bear.backgroundColor = [UIColor clearColor];
         bear.separatorEffect = [UIVibrancyEffect effectForBlurEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
         bear.separatorInset  = UIEdgeInsetsMake(0, 64, 0, 0);
@@ -316,6 +315,10 @@
     [self.bear.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
     [self.bear.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
     [self.bear.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    return YES;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -333,16 +336,8 @@
         return 68.0f;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 0.0f;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 36.0f;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
-    return YES;
+    return 44.0f;
 }
 
 - (void)updateHeaderView{
@@ -379,10 +374,10 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    if( scrollView.contentOffset.y < -8 && self.adjust ){
-        self.tfLayoutGuide.constant = fabs(scrollView.contentOffset.y) - 112 - STATUS_BAR_HEIGHT;
+    if( scrollView.contentOffset.y < 0 && self.adjust ){
+        self.tfLayoutGuide.constant = fabs(scrollView.contentOffset.y) - 104 - STATUS_BAR_HEIGHT;
         
-        if( scrollView.contentOffset.y < -( 112 + STATUS_BAR_HEIGHT ) ){
+        if( scrollView.contentOffset.y < -( 104 + STATUS_BAR_HEIGHT ) ){
             self.adjust = NO;
             self.tfLayoutGuide.constant = STATUS_BAR_HEIGHT;
             scrollView.hidden = YES;
