@@ -7,6 +7,7 @@
 //
 
 #import "CRPreviewController.h"
+#import "UIColor+Theme.h"
 
 @implementation CRPreviewController
 

@@ -30,73 +30,47 @@
 }
 
 - (void)initClass{
-    self.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.heightAnchor constraintEqualToConstant:104].active = YES;
+    CGFloat STATUS_BAR_HEIGHT = [UIApplication sharedApplication].statusBarFrame.size.height;
     
-    self.visual = ({
-        UIVibrancyEffect *eff = [UIVibrancyEffect effectForBlurEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
-        UIVisualEffectView *vis = [[UIVisualEffectView alloc] initWithEffect:eff];
-        vis.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:vis];
-        [vis.topAnchor constraintEqualToAnchor:self.topAnchor].active = YES;
-        [vis.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
-        [vis.rightAnchor constraintEqualToAnchor:self.rightAnchor].active = YES;
-        [vis.bottomAnchor constraintEqualToAnchor:self.bottomAnchor].active = YES;
-        vis;
-    });
-    
-    self.icon = ({
-        UILabel *i = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 56, 54)];
-        i.userInteractionEnabled = NO;
-        i.textAlignment = NSTextAlignmentCenter;
-        i.font = [UIFont MaterialDesignIconsWithSize:24];
-        i.text = [UIFont mdiPencil];
-        [self.visual.contentView addSubview:i];
-        i;
-    });
+    [self setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.2]];
+    [self setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.heightAnchor constraintEqualToConstant:88 + STATUS_BAR_HEIGHT].active = YES;
     
     self.title = ({
-        UILabel *t = [[UILabel alloc] initWithFrame:CGRectMake(56, 0, 280, 54)];
+        UILabel *t = [[UILabel alloc] init];
         t.userInteractionEnabled = NO;
-        t.font = [UIFont systemFontOfSize:24 weight:UIFontWeightLight];
+        t.font = [UIFont systemFontOfSize:20 weight:UIFontWeightMedium];
         t.text = @"Add todo";
-        [self.visual.contentView addSubview:t];
+        t.textColor = [UIColor whiteColor];
+        t.textAlignment = NSTextAlignmentCenter;
+        [self addSubview:t];
+        [t setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [t.topAnchor constraintEqualToAnchor:self.topAnchor constant:20].active = YES;
+        [t.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
+        [t.rightAnchor constraintEqualToAnchor:self.rightAnchor].active = YES;
+        [t.heightAnchor constraintEqualToConstant:44].active = YES;
         t;
-    });
-    
-    self.border = ({
-        CAShapeLayer *b = [CAShapeLayer layer];
-        b.backgroundColor = [UIColor whiteColor].CGColor;
-        [self.visual.contentView.layer addSublayer:b];
-        b;
-    });
-    
-    self.border2 = ({
-        CAShapeLayer *b = [CAShapeLayer layer];
-        b.backgroundColor = [UIColor whiteColor].CGColor;
-        [self.visual.contentView.layer addSublayer:b];
-        b;
     });
     
     self.textField = ({
         UITextField *tf = [[UITextField alloc] init];
-        tf.backgroundColor = [UIColor colorWithWhite:0 alpha:1];
-        tf.layer.borderColor = [UIColor whiteColor].CGColor;
-        tf.layer.borderWidth = 1;
+        tf.backgroundColor = [UIColor colorWithWhite:0 alpha:0.4];
         tf.leftViewMode = UITextFieldViewModeAlways;
         tf.keyboardAppearance = UIKeyboardAppearanceDark;
         tf.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8, 0)];
+        tf.font = [UIFont systemFontOfSize:17 weight:UIFontWeightRegular];
         tf.textColor = [UIColor whiteColor];
         tf.tintColor = [UIColor whiteColor];
         tf.clearButtonMode = UITextFieldViewModeWhileEditing;
-        tf.layer.cornerRadius = 4.0f;
-        tf.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"do..." attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+        tf.layer.cornerRadius = 3.0f;
+        tf.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"do..."
+                                                                   attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
         tf.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.visual.contentView addSubview:tf];
-        [tf.heightAnchor constraintEqualToConstant:32].active = YES;
-        [tf.leftAnchor constraintEqualToAnchor:self.visual.contentView.leftAnchor constant:8].active = YES;
-        [tf.rightAnchor constraintEqualToAnchor:self.visual.contentView.rightAnchor constant:-72].active = YES;
-        [tf.bottomAnchor constraintEqualToAnchor:self.visual.contentView.bottomAnchor constant:-9].active = YES;
+        [self addSubview:tf];
+        [tf.heightAnchor constraintEqualToConstant:30].active = YES;
+        [tf.leftAnchor constraintEqualToAnchor:self.leftAnchor constant:8].active = YES;
+        [tf.rightAnchor constraintEqualToAnchor:self.rightAnchor constant:-72].active = YES;
+        [tf.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-7].active = YES;
         [tf addTarget:self action:@selector(textFieldOnEdit:) forControlEvents:UIControlEventAllEditingEvents];
         tf;
     });
@@ -105,11 +79,13 @@
         UIButton *d = [[UIButton alloc] init];
         d.translatesAutoresizingMaskIntoConstraints = NO;
         [d setTitle:@"Cancel" forState:UIControlStateNormal];
-        [self.visual.contentView addSubview:d];
-        [d.heightAnchor constraintEqualToConstant:32].active = YES;
-        [d.rightAnchor constraintEqualToAnchor:self.visual.rightAnchor].active = YES;
+        [d setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [d setTitleColor:[UIColor colorWithWhite:1 alpha:0.4] forState:UIControlStateHighlighted];
+        [self addSubview:d];
+        [d.heightAnchor constraintEqualToConstant:44].active = YES;
+        [d.rightAnchor constraintEqualToAnchor:self.rightAnchor].active = YES;
         [d.leftAnchor constraintEqualToAnchor:self.textField.rightAnchor].active = YES;
-        [d.bottomAnchor constraintEqualToAnchor:self.visual.bottomAnchor constant:-9].active = YES;
+        [d.bottomAnchor constraintEqualToAnchor:self.bottomAnchor].active = YES;
         d;
     });
 }
@@ -123,8 +99,8 @@
 }
 
 - (void)layoutSubviews{
-    self.border.frame = CGRectMake(0, 54, self.frame.size.width, 0.5);
-    self.border2.frame = CGRectMake(0, 103.5, self.frame.size.width, 0.5);
+//    self.border.frame = CGRectMake(0, 54, self.frame.size.width, 0.5);
+//    self.border2.frame = CGRectMake(0, 103.5, self.frame.size.width, 0.5);
 }
 
 @end

@@ -46,7 +46,7 @@
     self.dotLabel = ({
         UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
         l.textAlignment = NSTextAlignmentCenter;
-        l.font = [UIFont MaterialDesignIconsWithSize:24];
+        l.font = [UIFont MaterialDesignIconsWithSize:15];
         l.text = [UIFont mdiCheckboxBlankCircle];
         [self.contentView addSubview:l];
         l;

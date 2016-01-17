@@ -21,20 +21,36 @@
 
 + (UIColor *)colorWithIndex:(int)i{
     
-    if( i < 0 || i > 7 ) return [UIColor colorWithHex:CLThemeBluelight alpha:1];
+//    if( i < 0 || i > 7 ) return [UIColor colorWithHex:CLThemeBluelight alpha:1];
+//    int colors[] = {
+//        CLThemeBluelight,
+//        CLThemeBluedeep,
+//        CLThemeYellowlight,
+//        CLThemeYellowdeep,
+//        CLThemeRedlight,
+//        CLThemeReddeep,
+//        CLThemeGreen,
+//        CLThemeGray
+//    };
     
-    int colors[] = {
-        CLThemeBluelight,
-        CLThemeBluedeep,
-        CLThemeYellowlight,
-        CLThemeYellowdeep,
-        CLThemeRedlight,
-        CLThemeReddeep,
-        CLThemeGreen,
-        CLThemeGray
-    };
+    NSArray *colors = @[
+//                        [UIColor colorWithRed:255 / 255.0 green:41  / 255.0 blue:104 / 255.0 alpha:1],
+                        [self colorWithHex:CLThemeRedlight alpha:1],
+//                        [UIColor colorWithRed:255 / 255.0 green:149 / 255.0 blue:0   / 255.0 alpha:1],
+                        [self colorWithHex:CLThemeYellowdeep alpha:1],
+//                        [UIColor colorWithRed:255 / 255.0 green:204 / 255.0 blue:1   / 255.0 alpha:1],
+                        [self colorWithHex:CLThemeYellowlight alpha:1],
+//                        [UIColor colorWithRed:99  / 255.0 green:218 / 255.0 blue:56  / 255.0 alpha:1],
+                        [self colorWithHex:CLThemeGreen alpha:1],
+//                        [UIColor colorWithRed:27  / 255.0 green:173 / 255.0 blue:248 / 255.0 alpha:1],
+                        [self colorWithHex:CLThemeBluelight alpha:1],
+                        [UIColor colorWithRed:204 / 255.0 green:115 / 255.0 blue:225 / 255.0 alpha:1],
+                        [UIColor colorWithRed:161 / 255.0 green:131 / 255.0 blue:93  / 255.0 alpha:1]
+                        ];
     
-    return [self colorWithHex:colors[i] alpha:1];
+    if( i < 0 || i > 6 ) return colors.firstObject;
+    
+    return colors[i];
 }
 
 + (UIColor *)colorWithHex:(uint32_t)hex alpha:(CGFloat)alpha{

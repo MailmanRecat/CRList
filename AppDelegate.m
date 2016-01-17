@@ -29,7 +29,7 @@
     
     self.photowall = ({
         UIImageView *photowall = [[UIImageView alloc] init];
-        photowall.image = [UIImage imageNamed:@"El Capitan.jpg"];
+        photowall.image = [UIImage imageNamed:@"BEIJING.JPG"];
         letLayout(photowall);
         photowall;
     });

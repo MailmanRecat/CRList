@@ -28,15 +28,18 @@
 
 - (void)initClass{
     self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+//    self.names = @[
+//                   @"Blue light",
+//                   @"Blue deep",
+//                   @"Yellow light",
+//                   @"Yellow deep",
+//                   @"Red light",
+//                   @"Red deep",
+//                   @"Green",
+//                   @"Gray"
+//                   ];
     self.names = @[
-                   @"Blue light",
-                   @"Blue deep",
-                   @"Yellow light",
-                   @"Yellow deep",
-                   @"Red light",
-                   @"Red deep",
-                   @"Green",
-                   @"Gray"
+                   @"Red", @"Orange", @"Yellow", @"Green", @"Blue", @"Purple", @"Brown"
                    ];
     
     self.showsHorizontalScrollIndicator = NO;
@@ -53,7 +56,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 8;
+    return self.names.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

@@ -33,7 +33,7 @@
     self.icon = ({
         UILabel *i = [[UILabel alloc] init];
         i.textAlignment = NSTextAlignmentCenter;
-        i.font = [UIFont MaterialDesignIconsWithSize:24];
+        i.font = [UIFont MaterialDesignIconsWithSize:22];
         i.text = [UIFont mdiCheckboxBlankCircleOutline];
         [self.contentView addSubview:i];
         i;
@@ -42,7 +42,7 @@
     self.listLabel = ({
         CRListLabel *l = [[CRListLabel alloc] init];
         l.numberOfLines = 1;
-        l.font = [UIFont systemFontOfSize:21 weight:UIFontWeightLight];
+        l.font = [UIFont systemFontOfSize:20 weight:UIFontWeightLight];
         l.translatesAutoresizingMaskIntoConstraints = NO;
         [self.contentView addSubview:l];
         [l.topAnchor constraintEqualToAnchor:self.contentView.topAnchor].active = YES;

@@ -7,6 +7,7 @@
 //
 
 #define STATUS_BAR_HEIGHT [UIApplication sharedApplication].statusBarFrame.size.height
+#define LIST_MAX_ITEM_LEN 128
 
 #import "ViewController.h"
 #import "CRListTableViewCell.h"
@@ -217,7 +218,7 @@
     }
     
     CRLIAsset *asset = [CRLIAsset defaultAsset];
-    asset.item  = self.tf.textField.text.length > 256 ? [self.tf.textField.text substringToIndex:256] : self.tf.textField.text;
+    asset.item  = self.tf.textField.text.length > LIST_MAX_ITEM_LEN ? [self.tf.textField.text substringToIndex:LIST_MAX_ITEM_LEN] : self.tf.textField.text;
     asset.color = [NSString stringWithFormat:@"%ld", self.sv.selectedIndexPath.row];
     
     [self.assets insertObject:asset atIndex:0];
@@ -258,7 +259,7 @@
     CRListTextField *tf = [[CRListTextField alloc] init];
     [self.view addSubview:tf];
     self.tfLayoutGuide = [tf.topAnchor constraintEqualToAnchor:self.view.topAnchor];
-    self.tfLayoutGuide.constant = -104 - STATUS_BAR_HEIGHT;
+    self.tfLayoutGuide.constant = -(88 + STATUS_BAR_HEIGHT);
     self.tfLayoutGuide.active = YES;
     [tf.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
     [tf.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
@@ -276,10 +277,10 @@
     
     [self.sv.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
     [self.sv.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
-    [self.sv.heightAnchor constraintEqualToAnchor:self.view.heightAnchor constant:-(104 + STATUS_BAR_HEIGHT)].active = YES;
+    [self.sv.heightAnchor constraintEqualToAnchor:self.view.heightAnchor constant:-(88 + STATUS_BAR_HEIGHT)].active = YES;
     [self.sv layoutIfNeeded];
     
-    self.svLayoutGuide.constant = STATUS_BAR_HEIGHT + 104;
+    self.svLayoutGuide.constant = STATUS_BAR_HEIGHT + 88;
     
     [UIView animateWithDuration:0.25f
                           delay:0.0f options:(7 << 16)
@@ -375,11 +376,11 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     if( scrollView.contentOffset.y < 0 && self.adjust ){
-        self.tfLayoutGuide.constant = fabs(scrollView.contentOffset.y) - 104 - STATUS_BAR_HEIGHT;
+        self.tfLayoutGuide.constant = fabs(scrollView.contentOffset.y) - (88 + STATUS_BAR_HEIGHT * 2);
         
-        if( scrollView.contentOffset.y < -( 104 + STATUS_BAR_HEIGHT ) ){
+        if( scrollView.contentOffset.y < -(88 + STATUS_BAR_HEIGHT * 2) ){
             self.adjust = NO;
-            self.tfLayoutGuide.constant = STATUS_BAR_HEIGHT;
+            self.tfLayoutGuide.constant = 0;
             scrollView.hidden = YES;
             [self.tf.textField becomeFirstResponder];
             [self letSetting];
@@ -483,7 +484,7 @@
     CRListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     CRLIAsset *asset = [self.checkedAssets objectAtIndex:indexPath.row];
     
-    [self letAlertActionWithTitle:@"Are you sure want to recover this item?" msg:nil
+    [self letAlertActionWithTitle:@"Recover this item?" msg:nil
                       actionTitle:@"Recover"
                         tintColor:[UIColor colorWithIndex:[asset.color intValue]]
                           handler:^(UIAlertAction *action){
@@ -544,10 +545,10 @@
     [title addAttribute:NSFontAttributeName
                   value:[UIFont systemFontOfSize:20 weight:UIFontWeightRegular]
                   range:NSMakeRange(0, title.length)];
-        [title addAttribute:NSForegroundColorAttributeName
-                      value:tintColor
-                      range:NSMakeRange(0, title.length)];
-        [al setValue:title forKey:@"attributedTitle"];
+    [title addAttribute:NSForegroundColorAttributeName
+                  value:tintColor
+                  range:NSMakeRange(0, title.length)];
+    [al setValue:title forKey:@"attributedTitle"];
     
     [al addAction:ac];
     [al addAction:ca];
