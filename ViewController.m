@@ -18,7 +18,7 @@
 #import "Craig.h"
 #import "CRPreviewController.h"
 
-@interface ViewController()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UIViewControllerPreviewingDelegate, CRPreviewControllerActionDelegate>
+@interface ViewController()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UITextFieldDelegate, UIViewControllerPreviewingDelegate, CRPreviewControllerActionDelegate>
 
 @property( nonatomic, strong ) UITableView *bear;
 @property( nonatomic, strong ) UIVisualEffectView *section1Header;
@@ -267,9 +267,17 @@
     [tf.done addTarget:self action:@selector(tfShouldEndTask) forControlEvents:UIControlEventTouchUpInside];
     
     self.tf = tf;
+    self.tf.textField.delegate = self;
 }
 
-- (void)letSetting{    
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [self tfShouldEndTask];
+    
+    return YES;
+}
+
+- (void)letDotPicker{
+    
     [self.view addSubview:self.sv];
     
     self.svLayoutGuide = [self.sv.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:self.view.frame.size.height];
@@ -383,7 +391,7 @@
             self.tfLayoutGuide.constant = 0;
             scrollView.hidden = YES;
             [self.tf.textField becomeFirstResponder];
-            [self letSetting];
+            [self letDotPicker];
         }
     }
 }

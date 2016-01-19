@@ -57,6 +57,8 @@
         tf.backgroundColor = [UIColor colorWithWhite:0 alpha:0.4];
         tf.leftViewMode = UITextFieldViewModeAlways;
         tf.keyboardAppearance = UIKeyboardAppearanceDark;
+        tf.returnKeyType = UIReturnKeyDone;
+        tf.enablesReturnKeyAutomatically = YES;
         tf.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8, 0)];
         tf.font = [UIFont systemFontOfSize:17 weight:UIFontWeightRegular];
         tf.textColor = [UIColor whiteColor];
