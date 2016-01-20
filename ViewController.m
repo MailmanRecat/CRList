@@ -15,6 +15,7 @@
 #import "CRListSettingView.h"
 #import "UIColor+Theme.h"
 #import "CRLIAssetManager.h"
+#import "CRLIManager.h"
 #import "Craig.h"
 #import "CRPreviewController.h"
 
@@ -33,13 +34,6 @@
 @property( nonatomic, strong ) CRListSettingView *sv;
 @property( nonatomic, strong ) NSLayoutConstraint *svLayoutGuide;
 
-@property( nonatomic, strong ) NSMutableArray *assets;
-@property( nonatomic, strong ) NSMutableArray *undoAssets;
-@property( nonatomic, strong ) NSMutableArray *checkedAssets;
-
-@property( nonatomic, assign ) NSUInteger r1c;
-@property( nonatomic, assign ) NSUInteger r2c;
-
 @property( nonatomic, strong ) UIView *ground;
 @property( nonatomic, strong ) UIImageView *air;
 @property( nonatomic, strong ) NSLayoutConstraint *tc;
@@ -49,10 +43,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [self.view setBackgroundColor:[UIColor clearColor]];
     [self setAdjust:YES];
-    [self setAssets:[CRLIAssetManager fetchAssets]];
+    
     [self letBear];
     [self letTextField];
     
@@ -109,9 +102,7 @@
     }
 }
 
-- (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit{
-    
-}
+- (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit{}
 
 - (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location{
     NSIndexPath *indexPath = [self.bear indexPathForRowAtPoint:location];
@@ -121,7 +112,7 @@
     previewingContext.sourceRect = hair.frame;
     
     CRPreviewController *previewController = [[CRPreviewController alloc] init];
-    previewController.title = indexPath.section == 0 ? ((CRLIAsset *)self.undoAssets[indexPath.row]).item : ((CRLIAsset *)self.checkedAssets[indexPath.row]).item;
+    previewController.title = indexPath.section == 0 ? ((CRLIAsset *)[CRLIManager defaultManager].doneAssets[indexPath.row]).item : ((CRLIAsset *)[CRLIManager defaultManager].doneAssets[indexPath.row]).item;
     
     previewController.indexPath = indexPath;
     previewController.delegate  = self;
@@ -155,33 +146,8 @@
         [self registerForPreviewingWithDelegate:self sourceView:self.bear];
 }
 
-- (void)setAssets:(NSMutableArray *)assets{
-    _assets = assets;
-    
-    if( self.undoAssets == nil )
-        self.undoAssets = [[NSMutableArray alloc] init];
-    else
-        [self.undoAssets removeAllObjects];
-    
-    if( self.checkedAssets == nil )
-        self.checkedAssets = [[NSMutableArray alloc] init];
-    else
-        [self.checkedAssets removeAllObjects];
-    
-    self.r1c = self.r2c = 0;
-    [assets enumerateObjectsUsingBlock:^(CRLIAsset *asset, NSUInteger index, BOOL *sS){
-        if( [asset.checkedTime isEqualToString:CRLIAssetCheckedTimeDefVal] ){
-            self.r1c++;
-            [self.undoAssets addObject:asset];
-        }else{
-            self.r2c++;
-            [self.checkedAssets addObject:asset];
-        }
-    }];
-}
-
 - (void)letSynchronize{
-    [CRLIAssetManager updateAssets:self.assets];
+    [CRLIAssetManager updateAssets:[CRLIManager defaultManager].assets];
 }
 
 - (void)letObserver{
@@ -210,10 +176,6 @@
 - (void)letItemAdd{
     
     if( [self.tf.textField.text isEqualToString:@"app.execute.clear"] ){
-        [CRLIAssetManager clearAllAssets:YES];
-        [self setAssets:[CRLIAssetManager fetchAssets]];
-        [self letCancel];
-        [self.bear reloadData];
         return;
     }
     
@@ -221,16 +183,15 @@
     asset.item  = self.tf.textField.text.length > LIST_MAX_ITEM_LEN ? [self.tf.textField.text substringToIndex:LIST_MAX_ITEM_LEN] : self.tf.textField.text;
     asset.color = [NSString stringWithFormat:@"%ld", self.sv.selectedIndexPath.row];
     
-    [self.assets insertObject:asset atIndex:0];
-    [self.undoAssets insertObject:asset atIndex:0];
-    self.r1c++;
+    [[CRLIManager defaultManager].assets insertObject:asset atIndex:0];
+    [[CRLIManager defaultManager].todoAssets insertObject:asset atIndex:0];
     
     [self.bear insertRowsAtIndexPaths:@[
                                         [NSIndexPath indexPathForRow:0 inSection:0]
                                         ]
                      withRowAnimation:UITableViewRowAnimationFade];
     
-    self.section1HeaderTitle.text = [NSString stringWithFormat:@"Todo ( %ld %@ )", self.r1c, self.r1c > 1 ? @"items" : @"item"];
+    [self updateHeaderView];
 
     [self letSynchronize];
     [self letCancel];
@@ -335,7 +296,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return section == 0 ? self.r1c : self.r2c;
+    return section == 0 ? [CRLIManager defaultManager].todoAssets.count : [CRLIManager defaultManager].doneAssets.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -350,15 +311,17 @@
 }
 
 - (void)updateHeaderView{
-    self.section1HeaderTitle.text = [NSString stringWithFormat:@"Todo ( %ld %@ )", self.r1c, self.r1c > 1 ? @"items" : @"item"];
-    self.section2HeaderTitle.text = [NSString stringWithFormat:@"Done ( %ld %@ )", self.r2c, self.r1c > 1 ? @"items" : @"item"];
+    NSUInteger r0c = [CRLIManager defaultManager].todoAssets.count;
+    NSUInteger r1c = [CRLIManager defaultManager].doneAssets.count;
+    self.section1HeaderTitle.text = [NSString stringWithFormat:@"Todo ( %ld %@ )", r0c, r0c > 1 ? @"items" : @"item"];
+    self.section2HeaderTitle.text = [NSString stringWithFormat:@"Done ( %ld %@ )", r1c, r1c > 1 ? @"items" : @"item"];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
 
     if( section == 0 ){
         return self.section1Header ? : ({
-            self.section1Header = [Craig headerViewWithTitle:[NSString stringWithFormat:@"Todo ( %ld items )", self.r1c]];
+            self.section1Header = [Craig headerViewWithTitle:[NSString stringWithFormat:@"Todo ( %ld items )", [CRLIManager defaultManager].todoAssets.count]];
             [self.section1Header.contentView.subviews enumerateObjectsUsingBlock:^(UIView *v, NSUInteger ind, BOOL *sS){
                 if( [v isKindOfClass:[UILabel class]] ){
                     self.section1HeaderTitle = (UILabel *)v;
@@ -369,7 +332,7 @@
         });
     }else{
         return self.section2Header ? : ({
-            self.section2Header = [Craig headerViewWithTitle:[NSString stringWithFormat:@"Done ( %ld items )", self.r2c]];
+            self.section2Header = [Craig headerViewWithTitle:[NSString stringWithFormat:@"Done ( %ld items )", [CRLIManager defaultManager].doneAssets.count]];
             [self.section2Header.contentView.subviews enumerateObjectsUsingBlock:^(UIView *v, NSUInteger ind, BOOL *sS){
                 if( [v isKindOfClass:[UILabel class]] ){
                     self.section2HeaderTitle = (UILabel *)v;
@@ -402,9 +365,9 @@
     CRLIAsset *asset;
     
     if( indexPath.section == 0 )
-        asset = self.undoAssets[indexPath.row];
+        asset = [CRLIManager defaultManager].todoAssets[indexPath.row];
     else
-        asset = self.checkedAssets[indexPath.row];
+        asset = [CRLIManager defaultManager].doneAssets[indexPath.row];
     
     hair = (CRListTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CRListTableViewCellID] ? : [CRListTableViewCell new];
     
@@ -457,23 +420,22 @@
 
 - (void)letDone:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
     CRListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    CRLIAsset *asset = [self.undoAssets objectAtIndex:indexPath.row];
+    CRLIManager *manager = [CRLIManager defaultManager];
+    CRLIAsset *asset = [manager.todoAssets objectAtIndex:indexPath.row];
     
     [self letAlertActionWithTitle:@"Done this item?" msg:nil
                       actionTitle:@"Done"
                         tintColor:[UIColor colorWithIndex:[asset.color intValue]]
                           handler:^(UIAlertAction *action){
                               cell.listLabel.overline = YES;
-                              self.r1c--;
-                              self.r2c++;
                               
                               [asset setCheckedTime:[Craig timeString]];
                               [cell setTimeString:asset.checkedTime];
                               
-                              [self.undoAssets removeObjectAtIndex:indexPath.row];
-                              [self.checkedAssets insertObject:asset atIndex:0];
-                              [self.assets removeObject:asset];
-                              [self.assets insertObject:asset atIndex:0];
+                              [manager.todoAssets removeObjectAtIndex:indexPath.row];
+                              [manager.doneAssets insertObject:asset atIndex:0];
+                              [manager.assets removeObject:asset];
+                              [manager.assets insertObject:asset atIndex:0];
                               [self letSynchronize];
                               
                               [tableView moveRowAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
@@ -490,22 +452,21 @@
 
 - (void)letRecover:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
     CRListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    CRLIAsset *asset = [self.checkedAssets objectAtIndex:indexPath.row];
+    CRLIManager *manager = [CRLIManager defaultManager];
+    CRLIAsset *asset = [manager.doneAssets objectAtIndex:indexPath.row];
     
     [self letAlertActionWithTitle:@"Recover this item?" msg:nil
                       actionTitle:@"Recover"
                         tintColor:[UIColor colorWithIndex:[asset.color intValue]]
                           handler:^(UIAlertAction *action){
                               cell.listLabel.overline = NO;
-                              self.r1c++;
-                              self.r2c--;
                               
                               cell.timeString = asset.checkedTime = CRLIAssetCheckedTimeDefVal;
                               
-                              [self.checkedAssets removeObjectAtIndex:indexPath.row];
-                              [self.undoAssets insertObject:asset atIndex:0];
-                              [self.assets removeObject:asset];
-                              [self.assets insertObject:asset atIndex:0];
+                              [manager.doneAssets removeObjectAtIndex:indexPath.row];
+                              [manager.todoAssets insertObject:asset atIndex:0];
+                              [manager.assets removeObject:asset];
+                              [manager.assets insertObject:asset atIndex:0];
                               [self letSynchronize];
                               
                               [tableView moveRowAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
@@ -522,17 +483,16 @@
 }
 
 - (void)letDelete:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
-    CRLIAsset *editingAsset = indexPath.section == 0 ? self.undoAssets[indexPath.row] : self.checkedAssets[indexPath.row];
+    CRLIManager *manager = [CRLIManager defaultManager];
+    CRLIAsset *editingAsset = indexPath.section == 0 ? manager.todoAssets[indexPath.row] : manager.doneAssets[indexPath.row];
     
     if( indexPath.section == 0 ){
-        self.r1c--;
-        [self.undoAssets removeObject:editingAsset];
+        [manager.todoAssets removeObject:editingAsset];
     }else{
-        self.r2c--;
-        [self.checkedAssets removeObject:editingAsset];
+        [manager.doneAssets removeObject:editingAsset];
     }
     
-    [self.assets removeObject:editingAsset];
+    [manager.assets removeObject:editingAsset];
     [self letSynchronize];
     
     [tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationLeft];

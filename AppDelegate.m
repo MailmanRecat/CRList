@@ -45,6 +45,8 @@
     
     [self letApplicationBackground];
     
+    self.listManager = [CRLIManager defaultManager];
+    
     return YES;
 }
 

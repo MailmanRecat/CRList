@@ -11,6 +11,10 @@
 
 @interface CRLIManager : NSObject
 
-+ (NSArray<CRLIAsset *> *)fetchItemAssets;
+@property( nonatomic, strong ) NSMutableArray *assets;
+@property( nonatomic, strong ) NSMutableArray *todoAssets;
+@property( nonatomic, strong ) NSMutableArray *doneAssets;
+
++ (instancetype)defaultManager;
 
 @end
