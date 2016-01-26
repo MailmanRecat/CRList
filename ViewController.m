@@ -18,10 +18,13 @@
 #import "CRLIManager.h"
 #import "Craig.h"
 #import "CRPreviewController.h"
+#import "SearchSettingViewController.h"
 
 @interface ViewController()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UITextFieldDelegate, UIViewControllerPreviewingDelegate, CRPreviewControllerActionDelegate>
 
-@property( nonatomic, strong ) UITableView *bear;
+@property( nonatomic, strong ) SearchSettingViewController *searchSettingController;
+@property( nonatomic, strong ) UIScrollView *split;
+@property( nonatomic, strong ) UITableView  *bear;
 @property( nonatomic, strong ) UIVisualEffectView *section1Header;
 @property( nonatomic, strong ) UIVisualEffectView *section2Header;
 @property( nonatomic, strong ) UILabel *section1HeaderTitle;
@@ -79,6 +82,7 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated{
+    self.split.contentOffset = CGPointMake(self.view.frame.size.width, 0);
     
     if( self.ground && self.air ){
     
@@ -265,6 +269,28 @@
         st;
     });
     
+    self.split = ({
+        UIScrollView *split = [[UIScrollView alloc] init];
+        split.pagingEnabled = YES;
+        split.bounces = NO;
+        split.showsHorizontalScrollIndicator = NO;
+        split.showsVerticalScrollIndicator   = NO;
+        
+        [split setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.view addSubview:split];
+        [split.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:STATUS_BAR_HEIGHT].active = YES;
+        [split.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
+        [split.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
+        [split.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
+        split;
+    });
+    
+    self.searchSettingController = [[SearchSettingViewController alloc] init];
+    
+    [self addChildViewController:self.searchSettingController];
+    [self.searchSettingController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.split addSubview:self.searchSettingController.view];
+
     self.bear = ({
         UITableView *bear = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         bear.translatesAutoresizingMaskIntoConstraints = NO;
@@ -280,11 +306,21 @@
         bear;
     });
     
-    [self.view addSubview:self.bear];
-    [self.bear.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:STATUS_BAR_HEIGHT].active = YES;
-    [self.bear.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
-    [self.bear.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
-    [self.bear.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
+    [self.split addSubview:self.bear];
+    
+    [self.bear.topAnchor constraintEqualToAnchor:self.split.topAnchor].active = YES;
+    [self.bear.rightAnchor constraintEqualToAnchor:self.split.rightAnchor].active = YES;
+    [self.bear.bottomAnchor constraintEqualToAnchor:self.split.bottomAnchor].active = YES;
+    [self.bear.heightAnchor constraintEqualToAnchor:self.split.heightAnchor].active = YES;
+    [self.bear.widthAnchor constraintEqualToAnchor:self.split.widthAnchor].active = YES;
+    
+    [self.searchSettingController.view.rightAnchor constraintEqualToAnchor:self.bear.leftAnchor].active = YES;
+    
+    [self.searchSettingController.view.topAnchor constraintEqualToAnchor:self.split.topAnchor].active = YES;
+    [self.searchSettingController.view.leftAnchor constraintEqualToAnchor:self.split.leftAnchor].active = YES;
+    [self.searchSettingController.view.bottomAnchor constraintEqualToAnchor:self.split.bottomAnchor].active = YES;
+    [self.searchSettingController.view.heightAnchor constraintEqualToAnchor:self.split.heightAnchor].active = YES;
+    [self.searchSettingController.view.widthAnchor constraintEqualToAnchor:self.split.widthAnchor].active = YES;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
